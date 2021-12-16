@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar, Nav } from 'react-bootstrap';
-import { useAuth } from "../../contexts/AuthContexts";
+import { useAuth } from "../../contexts/contexts";
 import { auth } from "../../firebase";
-import { CheckIfUserIsAdmin } from "./../../utils/utils";
 import './navbar.css';
 
 export default function BootstrapNavbar() {
@@ -12,9 +11,7 @@ export default function BootstrapNavbar() {
     let email = undefined;
 
     if(auth.currentUser != null) {
-
         email = auth.currentUser.email
-
     }
 
     async function handleLogout() {
@@ -28,24 +25,15 @@ export default function BootstrapNavbar() {
     }
 
     return(
-        <div>
+        <div className='navbar-div'>
             <div className="row">
                 <div className="col-md-12" id='navbar-container'>
                     <Router>
                         <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-                            <Navbar.Brand href="#home">QResent</Navbar.Brand>
+                            <Navbar.Brand href="#home">Trucks and furious</Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
                                     <Nav className="ml-auto">
-                                    {email ? (CheckIfUserIsAdmin(email) ?
-
-                                        <Nav.Link href="/admin">Dashboard</Nav.Link> :
-
-                                        <Nav.Link href="/">Dashboard</Nav.Link>) :
-
-                                        <Nav.Link href="/">Dashboard</Nav.Link>
-
-                                        }
                                         <Nav.Link href="/profil">Profil</Nav.Link>
                                         <Nav.Link href="/login" onClick={handleLogout}>Log Out</Nav.Link>
                                     </Nav>

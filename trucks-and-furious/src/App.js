@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./components/auth/register/register";
 import Login from "./components/auth/login/login";
 import Navbar from "./components/navbar/navbar";
+import RequestOfferForm from "./components/forms/RequestOfferForm";
 import PrivateRoute from "./components/private-route/private-route";
 import MapView from "./components/map/map";
 
@@ -16,6 +17,7 @@ function App() {
             <Navbar/>
             <Switch>
               <Route exact path="/register" component={Register} />
+              <Route exact path="/request-offer-form" component={RequestOfferForm} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={MapView} />
             </Switch>

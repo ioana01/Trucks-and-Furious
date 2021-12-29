@@ -6,6 +6,7 @@ import Login from "./components/auth/login/login";
 import Navbar from "./components/navbar/navbar";
 import PrivateRoute from "./components/private-route/private-route";
 import MapView from "./components/map/map";
+import DemandAndSupplyList from "./components/demand-and-supply-list/demand-and-supply-list";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/" component={MapView} />
+              <Route exact path="/" component={DemandAndSupplyList} />
             </Switch>
           </AuthProvider>
         </Router>

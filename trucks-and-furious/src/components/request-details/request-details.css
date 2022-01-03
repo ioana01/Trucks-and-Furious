@@ -1,0 +1,31 @@
+.item-info {
+    background-color: rgb(241, 239, 239);
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-radius: 7px;
+    padding: 20px 0 20px 20px;
+}
+
+.info-section {
+    margin-bottom: 40px;
+}
+
+.close-deal-btn {
+    background-color: #3a78ff;
+    color: #fff;
+    display: flex;
+}
+
+.close-deal-btn:hover {
+    background-color: #386fe7;
+    color: #fff;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 35px;
+    margin-bottom: 15px;
+}

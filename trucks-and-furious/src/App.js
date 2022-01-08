@@ -19,8 +19,8 @@ function App() {
             <Navbar/>
             <Switch>
               <Route exact path="/register" component={Register} />
-              <Route exact path="/demand-supply-add-form" component={DemandAndSupplyAddForm} />
               <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/demand-supply-add-form" component={DemandAndSupplyAddForm} />
               <PrivateRoute exact path="/" component={DemandAndSupplyList} />
               <PrivateRoute exact path="/item/:id" component={RequestDetails}/>
             </Switch>

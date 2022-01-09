@@ -57,7 +57,6 @@ class RequestDetails extends Component {
                             <p>Data plecarii: {this.state.currentItem.departure_time}</p>
                             <p>Data sosirii: {this.state.currentItem.arrival_time}</p>
                         </div>
-                        (!this.state.isSender ?
                         <div className='info-section'>
                             <p>Data maxima a plecarii: {this.state.currentItem.maximum_departure_time}</p>
                             <p>Data maxima a sosirii: {this.state.currentItem.maximum_arrival_time}</p>

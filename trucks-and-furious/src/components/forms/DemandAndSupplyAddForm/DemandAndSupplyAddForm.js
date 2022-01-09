@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import DateTimePicker from 'react-datetime-picker';
 
-export default class DemandAndSupplyAddForm extends Component   {
+class DemandAndSupplyAddForm extends Component {
 
     constructor(props) {
         super(props);
@@ -95,11 +95,16 @@ export default class DemandAndSupplyAddForm extends Component   {
     handleVolume(event) {
     }
 
+    handleWidth(event) {
+    }
+
     render() {
         return(
             <div className='row p-2 justify-content-md-center'>
-
+                Demand and supply add form
             </div>
         );
     }
 }
+
+export default DemandAndSupplyAddForm;

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import DateTimePicker from 'react-datetime-picker';
-
+import { database, auth } from "../../../firebase";
 class DemandAndSupplyAddForm extends Component {
 
     constructor(props) {
@@ -25,7 +25,9 @@ class DemandAndSupplyAddForm extends Component {
             merchType: '',
             volume: 0,
             width: 0,
-            currentUserType: 'expeditor'
+            trucks: [],
+            currentUserType: 'expeditor',
+            currentUserId: null
         }
 
         this.handleArrival = this.handleArrival.bind(this);
@@ -47,6 +49,52 @@ class DemandAndSupplyAddForm extends Component {
         this.handleWidth = this.handleWidth.bind(this);
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleExpeditorFormSubmit = this.handleExpeditorFormSubmit.bind(this);
+        this.handleTransporterFormSubmit = this.handleTransporterFormSubmit.bind(this);
+    }
+
+    async componentDidMount() {
+        const email = auth.currentUser.email;
+        const usersRefs = database.ref('users');
+        const trucksRefs = database.ref('trucks');
+        let trucksList = [];
+
+        await usersRefs.on('value', snapshot => {
+            snapshot.forEach(async (childSnapshot) => {
+                const userData = childSnapshot.val();
+                const userKey = childSnapshot.key;
+
+                if(userData.email === email) {            
+                    if (userData.userType === 'transportator') {
+                        await trucksRefs.on('value', snapshot => {
+                            snapshot.forEach(childSnapshot => {
+                                const childData = childSnapshot.val();
+                                const childId = childSnapshot.key;
+                                
+                                if (childData.owner_id === userKey) {
+                                    trucksList.push({ data: childData, id: childId });
+                                }
+                            });
+
+                            this.setState({ 
+                                currentUserType: userData.userType,
+                                currentUserId: userKey,
+                                trucks: trucksList
+                            });
+                        });
+                    }
+                    else 
+                    {
+                        this.setState({ 
+                            currentUserType: userData.userType,
+                            currentUserId: userKey,
+                            trucks: []
+                        });
+                    }
+
+                }
+            });
+        });
     }
 
     handleArrival(event) {
@@ -121,7 +169,17 @@ class DemandAndSupplyAddForm extends Component {
 
     handleFormSubmit(event) {
         event.preventDefault();
-        console.log(this.state);
+        (this.state.currentUserType === 'expeditor') 
+            ? this.handleExpeditorFormSubmit() 
+            : this.handleTransporterFormSubmit();
+    }
+
+    handleExpeditorFormSubmit(event) {
+        event.preventDefault();
+    }
+
+    handleTransporterFormSubmit(event) {
+        event.preventDefault();
     }
 
     render() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './demand-and-supply-list.css';
 import DemandAndSupplyItem from '../demand-and-supply-item/demand-and-supply-item';
-import AddIcon from '@material-ui/icons/Add';
+// import AddIcon from '@material-ui/icons/Add';
 import { database, auth } from "../../firebase";
 
 class DemandAndSupplyList extends Component {
@@ -123,7 +123,7 @@ class DemandAndSupplyList extends Component {
                 <div className='list-body'>
                     <div className="d-flex flex-row align-items-baseline">
                         <span className='list-type'>{this.state.listType}</span>
-                        <AddIcon className='ml-2' onClick={this.redirectToAddForm}/>
+                        {/* <AddIcon className='ml-2' onClick={this.redirectToAddForm}/> */}
                     </div>
                     {/* <button onClick={this.addCerere}>Click me!</button> */}
                     {this.state.currentUserType === 'transportator' &&

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DateTimePicker from 'react-datetime-picker';
+// import DateTimePicker from 'react-datetime-picker';
 
 export default class DemandAndSupplyAddForm extends Component   {
 

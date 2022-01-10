@@ -23,6 +23,7 @@ function App() {
               <PrivateRoute exact path="/demand-supply-add-form" component={DemandAndSupplyAddForm} />
               <PrivateRoute exact path="/" component={DemandAndSupplyList} />
               <PrivateRoute exact path="/item/:id" component={RequestDetails}/>
+              <PrivateRoute exact path="/map" component={MapView}/>
             </Switch>
           </AuthProvider>
         </Router>

@@ -10,13 +10,15 @@ class RequestDetails extends Component {
         this.state = {
             currentId: `-${this.props.match.params.id}`,
             currentItem: {},
-            isSender: false
+            isSender: false,
+            currentTruck: {}
         }
     }
 
     async componentDidMount() {
         const transportRequestsRefs = database.ref('transport_requests');
         const transportOffersRefs = database.ref('transport_offers');
+        const trucksRefs = database.ref('trucks');
 
         await transportRequestsRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
@@ -37,6 +39,17 @@ class RequestDetails extends Component {
                 if(childId === this.state.currentId) {
                     this.setState({ currentItem: childData })
                     this.setState({ isSender: true })
+                }
+            });
+        });
+
+        await trucksRefs.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                const childData = childSnapshot.val();
+                const childId = childSnapshot.key;
+
+                if(childId === this.state.currentItem.truck_id) {
+                    this.setState({ currentTruck: childData })
                 }
             });
         });
@@ -86,12 +99,12 @@ class RequestDetails extends Component {
                             <p>Data sosirii: {this.state.currentItem.arrival_time}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Tip camion: {this.state.currentItem.truck_type}</p>
-                            <p>Masa: {this.state.currentItem.mass}t</p>
-                            <p>Volum: {this.state.currentItem.volume}m<sup>3</sup></p>
-                            <p>Lungime: {this.state.currentItem.length}m</p>
-                            <p>Latime: {this.state.currentItem.width}m</p>
-                            <p>Inaltime: {this.state.currentItem.height}m</p>
+                            <p>Tip camion: {this.state.currentTruck.truck_type}</p>
+                            <p>Masa: {this.state.currentTruck.mass}t</p>
+                            <p>Volum: {this.state.currentTruck.volume}m<sup>3</sup></p>
+                            <p>Lungime: {this.state.currentTruck.length}m</p>
+                            <p>Latime: {this.state.currentTruck.width}m</p>
+                            <p>Inaltime: {this.state.currentTruck.height}m</p>
                         </div>
                         <div className='info-section'>
                             <p>Pret/km (pana la client): {this.state.currentItem.client_price} RON</p>

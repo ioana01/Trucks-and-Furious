@@ -60,28 +60,28 @@ class DemandAndSupplyAddForm extends Component {
         let trucksList = [];
 
         await usersRefs.on('value', snapshot => {
-            snapshot.forEach(async (childSnapshot) => {
+            snapshot.forEach((childSnapshot) => {
                 const userData = childSnapshot.val();
                 const userKey = childSnapshot.key;
 
                 if(userData.email === email) {            
                     if (userData.userType === 'transportator') {
-                        await trucksRefs.on('value', snapshot => {
-                            snapshot.forEach(childSnapshot => {
-                                const childData = childSnapshot.val();
-                                const childId = childSnapshot.key;
+                        // await trucksRefs.on('value', snapshot => {
+                        //     snapshot.forEach(childSnapshot => {
+                        //         const childData = childSnapshot.val();
+                        //         const childId = childSnapshot.key;
                                 
-                                if (childData.owner_id === userKey) {
-                                    trucksList.push({ data: childData, id: childId });
-                                }
-                            });
+                        //         if (childData.owner_id === userKey) {
+                        //             trucksList.push({ data: childData, id: childId });
+                        //         }
+                        //     });
 
-                            this.setState({ 
-                                currentUserType: userData.userType,
-                                currentUserId: userKey,
-                                trucks: trucksList
-                            });
-                        });
+                        //     this.setState({ 
+                        //         currentUserType: userData.userType,
+                        //         currentUserId: userKey,
+                        //         trucks: trucksList
+                        //     });
+                        // });
                     }
                     else 
                     {
@@ -91,10 +91,16 @@ class DemandAndSupplyAddForm extends Component {
                             trucks: []
                         });
                     }
-
                 }
             });
         });
+
+        await usersRefs
+            .child(email)
+            .once("email")
+            .then(snapshot => {
+                console.log(snapshot.value);
+            })
     }
 
     handleArrival(event) {

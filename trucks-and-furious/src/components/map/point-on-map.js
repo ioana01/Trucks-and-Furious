@@ -1,42 +1,107 @@
 import { useState, useEffect } from 'react';
 import { loadModules } from 'esri-loader';
 import { Map, Scene, WebMap, WebScene, MapView } from '@esri/react-arcgis'
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic"
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer"
 
 
 const PointOnMap = (props) => {
     const [pointGraphic, setPoint] = useState(null);
+    const [polylineGraphic, setLine] = useState(null);
     
     useEffect(() => {
-        loadModules(['esri/Graphic']).then(([Graphic]) => {
-            const point = { 
-                type: "point",
-                longitude: -118.80657463861,
-                latitude: 34.0005930608889
-            };
-
-            const simpleMarkerSymbol = {
+        loadModules(['esri/Graphic', "esri/Map","esri/views/MapView", "esri/layers/FeatureLayer"]).then(([Graphic]) => {
+            const redMarker = {
                 type: "simple-marker",
-                color: [226, 119, 40],  // Orange
+                color: [255, 0, 0], 
                 outline: {
-                    color: [255, 255, 255], // White
+                    color: [255, 255, 255], 
                     width: 1
                 }
             };
+
+            const greenMarker = {
+                type: "simple-marker",
+                color: [0, 255, 0], 
+                outline: {
+                    color: [255, 255, 255], 
+                    width: 1
+                }
+            };
+
+            props.trucks.map(truck => {
+                if(truck.data.status === 'unavailable') {
+                    console.log('llll');
+                    const polyline = {
+                        type: "polyline",
+                        paths: [
+                            [truck.data.departure.longitude, truck.data.departure.latitude], //Longitude, latitude
+                            [truck.data.destination.longitude, truck.data.destination.latitude], //Longitude, latitude
+                        ]
+                    };
     
-            const pointGraphic = new Graphic({
-                geometry: point,
-                symbol: simpleMarkerSymbol
-            });
-            setPoint(pointGraphic);
-            props.view.graphics.add(pointGraphic);
+                    const simpleLineSymbol = {
+                        type: "simple-line",
+                        color: [226, 119, 40], // Orange
+                        width: 2
+                        };
+        
+                    const polylineGraphic = new Graphic({
+                        geometry: polyline,
+                        symbol: simpleLineSymbol
+                    });
+        
+                    setLine(polylineGraphic);
+                    props.view.graphics.add(polylineGraphic);
+                }
+
+                const truckInfo = props.trucksInfo.filter((element) => {
+                    return element.data.truck_id === truck.id;
+                });
+
+                console.log(truckInfo);
+                const point = { 
+                    type: "point",
+                    longitude: truck.data.longitude,
+                    latitude: truck.data.latitude
+                };
+
+                const popupTemplate = {
+                    title: "{Name}",
+                    content: "{Description}"
+                }
+
+                const attributes = {
+                    Name: "Truck info",
+                    Description: 
+                                `<p>Truck id: ${truck.id}</p> 
+                                <p>De la: ${truckInfo[0].data.departure}</p>
+                                <p>Pana la: ${truckInfo[0].data.arrival}</p>
+                                <p>Data plecare: ${truckInfo[0].data.departure_time}</p>
+                                <p>Data sosire: ${truckInfo[0].data.arrival_time}</p>`
+                }
+        
+                const pointGraphic = new Graphic({
+                    geometry: point,
+                    symbol: truck.data.status === 'available' ? greenMarker : redMarker,
+                    attributes: attributes,
+                    popupTemplate: popupTemplate
+                });
+
+
+                console.log(pointGraphic);
+
+                setPoint(pointGraphic);
+                props.view.graphics.add(pointGraphic);
+
+            })
     
         })
         .catch((err) => console.error(err));
     }, []);
 
-    return <div id="viewDiv"></div>;
+    return <div></div>;
 
 }
 

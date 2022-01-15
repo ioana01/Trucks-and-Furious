@@ -32,7 +32,6 @@ const PointOnMap = (props) => {
 
             props.trucks.map(truck => {
                 if(truck.data.status === 'unavailable') {
-                    console.log('llll');
                     const polyline = {
                         type: "polyline",
                         paths: [
@@ -60,7 +59,6 @@ const PointOnMap = (props) => {
                     return element.data.truck_id === truck.id;
                 });
 
-                console.log(truckInfo);
                 const point = { 
                     type: "point",
                     longitude: truck.data.longitude,
@@ -88,9 +86,6 @@ const PointOnMap = (props) => {
                     attributes: attributes,
                     popupTemplate: popupTemplate
                 });
-
-
-                console.log(pointGraphic);
 
                 setPoint(pointGraphic);
                 props.view.graphics.add(pointGraphic);

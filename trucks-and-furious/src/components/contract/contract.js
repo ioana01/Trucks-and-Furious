@@ -12,7 +12,8 @@ class Contract extends Component {
             side2Id: `${this.props.match.params.myRequestId}`,
             transportRequestData: {},
             transportOfferData: {},
-            truckData: {}
+            truckData: {},
+            offerId: ''
         }
     }
 
@@ -35,6 +36,7 @@ class Contract extends Component {
 
         const offersRefs = database.ref('transport_offers');
         let offersData;
+        let offerId;
 
         await offersRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
@@ -43,10 +45,12 @@ class Contract extends Component {
 
                 if(childId === this.state.side1Id || childId === this.state.side2Id) {
                     offersData = childData;
+                    offerId = childId;
                 }
             });
 
             this.setState({ transportOfferData: offersData });
+            this.setState({ offerId: offerId });
         });
 
         const trucksRefs = database.ref('trucks');
@@ -66,6 +70,76 @@ class Contract extends Component {
         });
 
         database.ref('/trucks').child(this.state.transportOfferData.truck_id).update({'status': 'unavailable'});
+
+        this.createContract();
+    }
+
+    createContract() {
+        const contract = {
+            carry: {
+                email: this.state.transportOfferData.contact.email,
+                phone: this.state.transportOfferData.contact.phone
+            },
+            sender: {
+                email: this.state.transportRequestData.contact.email,
+                phone: this.state.transportRequestData.contact.phone
+            },
+            departure: this.state.transportOfferData.departure,
+            destination: this.state.transportOfferData.arrival,
+            price: this.getTotalPrice(),
+            deadline: this.state.transportOfferData.deadline,
+            merch: this.state.transportRequestData.merch_type,
+            truck: this.state.transportOfferData.truck_id
+        }
+
+        database.ref('contracts').push(contract);
+    }
+
+    distance(lat1, lat2, lon1, lon2) {
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 =  lon1 * Math.PI / 180;
+        lon2 = lon2 * Math.PI / 180;
+        lat1 = lat1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
+
+        // Haversine formula
+        let dlon = lon2 - lon1;
+        let dlat = lat2 - lat1;
+        let a = Math.pow(Math.sin(dlat / 2), 2)
+            + Math.cos(lat1) * Math.cos(lat2)
+            * Math.pow(Math.sin(dlon / 2),2);
+        
+        let c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        let r = 6371;
+
+        // calculate the result
+        return(c * r);
+    }
+
+    getTotalPrice() {
+        const priceToClient = this.distance(
+            this.state.transportRequestData.clientPosition.latitude,
+            this.state.truckData.departure.latitude,
+            this.state.transportRequestData.clientPosition.longitude,
+            this.state.truckData.departure.longitude) * 
+            (this.state.transportOfferData.client_price + this.state.transportOfferData.destination_price);
+
+        const priceToDestination = this.distance(
+            this.state.truckData.departure.latitude,
+            this.state.truckData.destination.latitude,
+            this.state.truckData.departure.longitude,
+            this.state.truckData.destination.longitude) * this.state.transportOfferData.destination_price;
+
+        const totalPrice = Math.round((priceToClient + priceToDestination) * 100) / 100;
+
+        database.ref('/transport_offers').child(this.state.offerId).update({'totalPrice': totalPrice});
+
+        return totalPrice;
     }
 
     render() {
@@ -96,8 +170,11 @@ class Contract extends Component {
                     <div className='info-section'>
                         <p>Plecare: {this.state.transportOfferData.departure}</p>
                         <p>Destinatie: {this.state.transportOfferData.arrival}</p>
-                        <p>Tarif/km pana la client: {this.state.transportOfferData.client_price} RON</p>
-                        <p>Tarif/km pana la destinatie: {this.state.transportOfferData.destination_price} RON</p>
+
+                        {this.state.transportRequestData && this.state.truckData &&
+                        this.state.transportRequestData.clientPosition && this.state.truckData.departure &&
+                        <p>Tarif: {this.getTotalPrice()} RON</p>}
+
                         <p>Termen de plata: {this.state.transportOfferData.deadline}</p>
                     </div>
 

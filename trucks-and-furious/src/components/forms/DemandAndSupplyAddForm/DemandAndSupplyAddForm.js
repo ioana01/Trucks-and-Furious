@@ -76,12 +76,11 @@ class DemandAndSupplyAddForm extends Component {
                         //         }
                         //     });
 
-                        //     this.setState({ 
-                        //         currentUserType: userData.userType,
-                        //         currentUserId: userKey,
-                        //         trucks: trucksList
-                        //     });
-                        // });
+                        this.setState({ 
+                            currentUserType: userData.userType,
+                            currentUserId: userKey,
+                            trucks: trucksList
+                        });
                     }
                     else 
                     {
@@ -95,12 +94,12 @@ class DemandAndSupplyAddForm extends Component {
             });
         });
 
-        await usersRefs
-            .child(email)
-            .once("email")
-            .then(snapshot => {
-                console.log(snapshot.value);
-            })
+        // await usersRefs
+        //     .child(email)
+        //     .once("email")
+        //     .then(snapshot => {
+        //         console.log(snapshot.value);
+        //     })
     }
 
     handleArrival(event) {

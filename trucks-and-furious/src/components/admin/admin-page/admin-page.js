@@ -3,6 +3,13 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/contexts";
 import { database, auth } from "../../../firebase";
 
+import { asyncFetchUsers
+        ,asyncFetchTrucks
+        ,asyncFetchContracts
+        ,asyncFetchStocks
+        ,asyncFetchTransportOffers
+        ,asyncFetchTransportRequests } from "./admin-fetch-effects";
+
 export default function AdminPage() {
 
     const { logout } = useAuth();
@@ -18,109 +25,37 @@ export default function AdminPage() {
 
     useEffect(() => {
         const usersRefs = database.ref('users');
-        async function fetchUsers() {
-            await usersRefs.on('value', snapshot => {
-                const users = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    users.push({ data: childData, id: childId });
-                });
-
-                setUsers(users);
-            });
-        }
+        const fetchUsers = async () => await asyncFetchUsers(usersRefs, setUsers);
         fetchUsers();
     }, []);
 
     useEffect(() => {
         const trucksRefs = database.ref('trucks');
-        async function fetchTrucks() {
-            await trucksRefs.on('value', snapshot => {
-                const trucks = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    trucks.push({ data: childData, id: childId });
-                });
-
-                setTrucks(trucks);
-            });
-        }
+        const fetchTrucks = async () => asyncFetchTrucks(trucksRefs, setTrucks);
         fetchTrucks();
     }, []);
 
     useEffect(() => {
         const stocksRefs = database.ref('stocks');
-        async function fetchStocks() {
-            await stocksRefs.on('value', snapshot => {
-                const stocks = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    stocks.push({ data: childData, id: childId });
-                });
-
-                setStocks(stocks);
-            });
-        }
+        const fetchStocks = async () => asyncFetchStocks(stocksRefs, setStocks);
         fetchStocks();
     }, []);
 
     useEffect(() => {
         const contractsRefs = database.ref('contracts');
-        async function fetchContracts() {
-            await contractsRefs.on('value', snapshot => {
-                const contracts = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    contracts.push({ data: childData, id: childId });
-                });
-
-                setContracts(contracts);
-            });
-        }
+        const fetchContracts = async () => asyncFetchContracts(contractsRefs, setContracts);
         fetchContracts();
     }, []);
 
     useEffect(() => {
         const transportOffersRefs = database.ref('transport_offers');
-        async function fetchTransportOffers() {
-            await transportOffersRefs.on('value', snapshot => {
-                const transportOffers = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    transportOffers.push({ data: childData, id: childId });
-                });
-
-                setTransportOffers(transportOffers);
-            });
-        }
+        const fetchTransportOffers = async () => asyncFetchTransportOffers(transportOffersRefs, setTransportOffers);
         fetchTransportOffers();
     }, []);
 
     useEffect(() => {
         const transportRequestsRefs = database.ref('transport_requests');
-        async function fetchTransportRequests() {
-            await transportRequestsRefs.on('value', snapshot => {
-                const transportRequests = [];
-
-                snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    const childId = childSnapshot.key;
-                    transportRequests.push({ data: childData, id: childId });
-                });
-
-                setTransportRequests(transportRequests);
-            });
-        }
+        const fetchTransportRequests = async () => asyncFetchTransportRequests(transportRequestsRefs, setTransportRequests);
         fetchTransportRequests();
     }, []);
 

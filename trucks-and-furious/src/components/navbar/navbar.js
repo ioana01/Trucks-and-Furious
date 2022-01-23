@@ -36,7 +36,7 @@ export default function BootstrapNavbar() {
                                     <Nav className="ml-auto">
                                         <Nav.Link href="/">Home</Nav.Link>
                                         <Nav.Link href="/map">Map</Nav.Link>
-                                        <Nav.Link href="/profil">Profil</Nav.Link>
+                                        <Nav.Link href="/contracts">Contracts</Nav.Link>
                                         <Nav.Link href="/login" onClick={handleLogout}>Log Out</Nav.Link>
                                     </Nav>
                                 </Navbar.Collapse>

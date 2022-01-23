@@ -9,6 +9,8 @@ import PrivateRoute from "./components/private-route/private-route";
 import MapView from "./components/map/map";
 import DemandAndSupplyList from "./components/demand-and-supply-list/demand-and-supply-list";
 import RequestDetails from "./components/request-details/request-details";
+import Contract from "./components/contract/contract";
+import ContractsDisplay from "./components/contracts-display/contracts-display";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
               <PrivateRoute exact path="/" component={DemandAndSupplyList} />
               <PrivateRoute exact path="/item/:id" component={RequestDetails}/>
               <PrivateRoute exact path="/map" component={MapView}/>
+              <PrivateRoute exact path="/contract/:clientRequest/:myRequestId" component={Contract}/>
+              <PrivateRoute exact path="/contracts" component={ContractsDisplay}/>
             </Switch>
           </AuthProvider>
         </Router>

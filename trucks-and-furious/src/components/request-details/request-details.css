@@ -29,3 +29,13 @@
     margin-right: 35px;
     margin-bottom: 15px;
 }
+
+.join-game-btn {
+    margin-top: 20px;
+    display: flex;
+}
+
+.join-game-btn-container {
+    display: flex;
+    justify-content: flex-end;
+}

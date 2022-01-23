@@ -67,6 +67,7 @@ export default function SignUp() {
                                 <option>Select an option</option>
                                 <option>transportator</option>
                                 <option>expeditor</option>
+                                <option>admin</option>
                             </Form.Select>
                         </Form.Group>
 

@@ -26,7 +26,7 @@ export default function AdminPage() {
     const [transportOffers, setTransportOffers] = useState([]);
     const [transportRequests, setTransportRequests] = useState([]);
 
-    const [sidebarChoice, setSidebarChoice] = useState("dashboard");
+    const [sidebarChoice, setSidebarChoice] = useState("users");
 
     useEffect(() => { setAccount(JSON.parse(localStorage.getItem("user"))); }, [])
 
@@ -71,10 +71,10 @@ export default function AdminPage() {
     }
 
     return (
-        <div class="container-fluid">
-            <div class="row">
-                <AdminSidebar handleSidebarChoice = {handleSidebarChoice} choice = {sidebarChoice}/>
-                <AdminDashboard/>
+        <div className="container-fluid">
+            <div className="row">
+                <AdminSidebar handleSidebarChoice = {handleSidebarChoice} sidebarChoice = {sidebarChoice}/>
+                <AdminDashboard sidebarChoice = {sidebarChoice}/>
             </div>
         </div>
     );

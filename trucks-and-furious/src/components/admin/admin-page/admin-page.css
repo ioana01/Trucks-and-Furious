@@ -17,6 +17,11 @@
 
 .sidebar_item {
     font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.active_sidebar_item {
+  color: blue;
 }
 
   @media (max-width: 767.98px) {

@@ -3,12 +3,17 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/contexts";
 import { database, auth } from "../../../firebase";
 
+import AdminDashboard from "./admin-dashboard";
+import AdminSidebar from "./admin-sidebar";
+
 import { asyncFetchUsers
         ,asyncFetchTrucks
         ,asyncFetchContracts
         ,asyncFetchStocks
         ,asyncFetchTransportOffers
         ,asyncFetchTransportRequests } from "./admin-fetch-effects";
+
+import './admin-page.css';
 
 export default function AdminPage() {
 
@@ -20,6 +25,8 @@ export default function AdminPage() {
     const [contracts, setContracts] = useState([]);
     const [transportOffers, setTransportOffers] = useState([]);
     const [transportRequests, setTransportRequests] = useState([]);
+
+    const [sidebarChoice, setSidebarChoice] = useState("dashboard");
 
     useEffect(() => { setAccount(JSON.parse(localStorage.getItem("user"))); }, [])
 
@@ -59,9 +66,16 @@ export default function AdminPage() {
         fetchTransportRequests();
     }, []);
 
+    const handleSidebarChoice = (choice) => {
+        setSidebarChoice(choice);
+    }
+
     return (
-        <div>
-            <h1>AdminPage</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <AdminSidebar handleSidebarChoice = {handleSidebarChoice} choice = {sidebarChoice}/>
+                <AdminDashboard/>
+            </div>
         </div>
     );
 }

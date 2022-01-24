@@ -13,6 +13,13 @@ import { asyncFetchUsers
         ,asyncFetchTransportOffers
         ,asyncFetchTransportRequests } from "./admin-fetch-effects";
 
+import { fetchUserTableTitles
+        ,fetchTruckTableTitles
+        ,fetchStocksTableTitles
+        ,fetchContractTableTitles
+        ,fetchTransportRequestsTableTitles
+        ,fetchTransportOffersTableTitles } from "./admin-fetch-table-details";
+
 import './admin-page.css';
 
 export default function AdminPage() {
@@ -26,7 +33,11 @@ export default function AdminPage() {
     const [transportOffers, setTransportOffers] = useState([]);
     const [transportRequests, setTransportRequests] = useState([]);
 
-    const [sidebarChoice, setSidebarChoice] = useState("users");
+    const [dashboard, setDashboard] = useState({
+        sidebarChoice: "Users",
+        columns: fetchUserTableTitles(),
+        items: users
+    });
 
     useEffect(() => { setAccount(JSON.parse(localStorage.getItem("user"))); }, [])
 
@@ -66,15 +77,54 @@ export default function AdminPage() {
         fetchTransportRequests();
     }, []);
 
+    useEffect(() => {
+        if (dashboard.sidebarChoice === "Users") {
+            const titles = fetchUserTableTitles()
+            setDashboard({ ...dashboard, columns: titles, items: users });
+            return;
+        }
+        if (dashboard.sidebarChoice === "Trucks") {
+            const titles = fetchTruckTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: trucks });
+            return;
+        }
+        if (dashboard.sidebarChoice === "Stocks") {
+            const titles = fetchStocksTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: stocks });
+            return;
+        }
+        if (dashboard.sidebarChoice === "Contracts") {
+            const titles = fetchContractTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: contracts });
+            return;
+        }
+        if (dashboard.sidebarChoice === "Requests") {
+            const titles = fetchTransportRequestsTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: transportRequests });
+            return;
+        }
+        if (dashboard.sidebarChoice === "Offers") {
+            const titles = fetchTransportOffersTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: transportOffers });
+            return;
+        }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [users, trucks, stocks, contracts, transportRequests, transportOffers, dashboard.sidebarChoice]);
+
     const handleSidebarChoice = (choice) => {
-        setSidebarChoice(choice);
+        setDashboard({...dashboard, sidebarChoice: choice});
     }
 
     return (
         <div className="container-fluid">
             <div className="row">
-                <AdminSidebar handleSidebarChoice = {handleSidebarChoice} sidebarChoice = {sidebarChoice}/>
-                <AdminDashboard sidebarChoice = {sidebarChoice}/>
+                <AdminSidebar handleSidebarChoice = {handleSidebarChoice} 
+                                sidebarChoice = {dashboard.sidebarChoice}/>
+
+                <AdminDashboard sidebarChoice = {dashboard.sidebarChoice} 
+                                columns = {dashboard.columns} 
+                                items = {dashboard.items}/>
             </div>
         </div>
     );

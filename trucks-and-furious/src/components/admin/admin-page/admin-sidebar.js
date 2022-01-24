@@ -19,33 +19,33 @@ export default function AdminSidebar({ handleSidebarChoice, sidebarChoice }) {
     <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div className="position-sticky pt-md-5">
             <ul className="nav flex-column">
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("users")}`}
-                    onClick={() => handleSidebarChoice("users")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Users")}`}
+                    onClick={() => handleSidebarChoice("Users")}>
                     <UsersIcon className="sidebar_icon"/>
                     <span className="ml-2">Users</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("stocks")}`}
-                    onClick={() => handleSidebarChoice("stocks")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Stocks")}`}
+                    onClick={() => handleSidebarChoice("Stocks")}>
                     <ShoppingCartIcon className="sidebar_icon"/>
                     <span className="ml-2">Stocks</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("contracts")}`}
-                    onClick={() => handleSidebarChoice("contracts")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Contracts")}`}
+                    onClick={() => handleSidebarChoice("Contracts")}>
                     <BriefcaseIcon className="sidebar_icon"/>
                     <span className="ml-2">Contracts</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("trucks")}`}
-                    onClick={() => handleSidebarChoice("trucks")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Trucks")}`}
+                    onClick={() => handleSidebarChoice("Trucks")}>
                     <TruckIcon className="sidebar_icon"/>
                     <span className="ml-2">Trucks</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("requests")}`}
-                    onClick={() => handleSidebarChoice("requests")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Requests")}`}
+                    onClick={() => handleSidebarChoice("Requests")}>
                     <PhoneIncomingIcon className="sidebar_icon"/>
                     <span className="ml-2">Tr. Requests</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("offers")}`}
-                    onClick={() => handleSidebarChoice("offers")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Offers")}`}
+                    onClick={() => handleSidebarChoice("Offers")}>
                     <PhoneOutgoingIcon className="sidebar_icon"/>
                     <span className="ml-2">Tr. Offers</span>
                 </li>

@@ -11,6 +11,7 @@ import DemandAndSupplyList from "./components/demand-and-supply-list/demand-and-
 import RequestDetails from "./components/request-details/request-details";
 import Contract from "./components/contract/contract";
 import ContractsDisplay from "./components/contracts-display/contracts-display";
+import AdminPage from "./components/admin/admin-page/admin-page";
 
 function App() {
   return (
@@ -22,12 +23,13 @@ function App() {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/admin" component={AdminPage} />
               <PrivateRoute exact path="/demand-supply-add-form" component={DemandAndSupplyAddForm} />
-              <PrivateRoute exact path="/" component={DemandAndSupplyList} />
               <PrivateRoute exact path="/item/:id" component={RequestDetails}/>
               <PrivateRoute exact path="/map" component={MapView}/>
               <PrivateRoute exact path="/contract/:clientRequest/:myRequestId" component={Contract}/>
               <PrivateRoute exact path="/contracts" component={ContractsDisplay}/>
+              <PrivateRoute exact path="/" component={DemandAndSupplyList} />
             </Switch>
           </AuthProvider>
         </Router>

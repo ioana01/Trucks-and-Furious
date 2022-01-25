@@ -32,6 +32,7 @@ class DemandAndSupplyList extends Component {
                 const childData = childSnapshot.val();
 
                 if(childData.email === email) {
+                    localStorage.setItem('user', JSON.stringify(childData));
                     this.setState({ currentUserType: childData.userType });
                 }
             });
@@ -150,6 +151,9 @@ class DemandAndSupplyList extends Component {
                                     id={element.id.replace('-','')}
                                     key={element.id.replace('-','')}/>
                     })}
+                    {
+                        this.state.currentUserType === 'admin' ? window.location.href='/admin' : null
+                    }
                 </div>
             </>
         );

@@ -22,9 +22,9 @@ export default function Login() {
         try {
             setError("");
             setLoading(true);
-            await login(emailRef.current.value, passwordRef.current.value);
+            const result = await login(emailRef.current.value, passwordRef.current.value);
             history.push("/")
-        } catch(error) {
+        } catch(error) { 
           setError(error.message);
         }
     

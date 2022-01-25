@@ -5,7 +5,7 @@ export const fetchUserTableTitles = () => {
 }
 
 export const fetchTruckTableTitles = () => {
-    return ["id", "truck_type", "owner", "owner_id", "status"];
+    return ["id", "truck_type", "owner", "owner_id", "status", "departure", "destination"];
 }
 
 export const fetchStocksTableTitles = () => {
@@ -65,8 +65,8 @@ export const fetchContractTableItems = (items) => {
             <tr key={column.id}>
                 <td> {column.id} </td>
                 <td> {column.data?.deadline} </td>
-                <td> {column.data?.departure} </td>
-                <td> {column.data?.destination} </td>
+                <td> {JSON.stringify(column.data?.departure)} </td>
+                <td> {JSON.stringify(column.data?.destination)} </td>
                 <td> {column.data?.carry?.email} </td>
                 <td> {column.data?.sender?.email} </td>
                 <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
@@ -106,10 +106,12 @@ export const fetchTruckTableItems = (items) => {
         return (
             <tr key={column.id}>
                 <td> {column.id} </td>
-                <td> {column.data?.truck_type} </td>
+                <td> {JSON.stringify(column.data?.truck_type)} </td>
                 <td> {column.data?.owner} </td>
                 <td> {column.data?.owner_id} </td>
                 <td> {column.data?.status} </td>
+                <td> {column.data?.departure?.name} </td>
+                <td> {column.data?.destination?.name} </td>
                 <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
             </tr>
         )

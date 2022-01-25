@@ -1,27 +1,27 @@
 export class TransportRequests {
     constructor(
         arrival,
-        arrival_time,
+        arrivalTime,
         budget,
         contact,
         departure,
-        departure_time,
+        departureTime,
         mass,
-        maximum_arrival_time,
-        maximum_departure_time,
-        merch_type,
+        maximumArrivalTime,
+        maximumDepartureTime,
+        merchType,
         volume
     ) {
         this.arrival = arrival;
-        this.arrival_time = arrival_time;
+        this.arrivalTime = arrivalTime;
         this.budget = budget;
         this.contact = contact;
         this.departure = departure;
-        this.departure_time = departure_time;
+        this.departureTime = departureTime;
         this.mass = mass;
-        this.maximum_arrival_time = maximum_arrival_time;
-        this.maximum_departure_time = maximum_departure_time;
-        this.merch_type = merch_type;
+        this.maximumArrivalTime = maximumArrivalTime;
+        this.maximumDepartureTime = maximumDepartureTime;
+        this.merchType = merchType;
         this.volume = volume;
     }
 };

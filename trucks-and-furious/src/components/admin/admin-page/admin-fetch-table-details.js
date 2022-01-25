@@ -5,7 +5,7 @@ export const fetchUserTableTitles = () => {
 }
 
 export const fetchTruckTableTitles = () => {
-    return ["id", "truck_type", "owner", "owner_id", "status", "departure", "destination"];
+    return ["id", "type", "owner", "ownerId", "status", "departure", "destination"];
 }
 
 export const fetchStocksTableTitles = () => {
@@ -17,11 +17,11 @@ export const fetchContractTableTitles = () => {
 }
 
 export const fetchTransportRequestsTableTitles = () => {
-    return ["id", "arrival", "arrival_time", "departure", "departure_time", "merch_type", "mass", "volume"];
+    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "merchType", "mass", "volume"];
 }
 
 export const fetchTransportOffersTableTitles = () => {
-    return ["id", "arrival", "arrival_time", "departure", "departure_time", "truck_id", "totalPrice"];
+    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "type", "totalPrice"];
 }
 
 export const fetchTransportOffersTableItems = (items) => {
@@ -30,10 +30,10 @@ export const fetchTransportOffersTableItems = (items) => {
             <tr key={column.id}>
                 <td> {column.id} </td>
                 <td> {column.data?.arrival} </td>
-                <td> {column.data?.arrival_time} </td>
+                <td> {column.data?.arrivalTime} </td>
                 <td> {column.data?.departure} </td>
-                <td> {column.data?.departure_time} </td>
-                <td> {column.data?.truck_id} </td>
+                <td> {column.data?.departureTime} </td>
+                <td> {column.data?.truckId} </td>
                 <td> {column.data?.totalPrice} </td>
                 <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
             </tr>
@@ -47,10 +47,10 @@ export const fetchTransportRequestsTableItems = (items) => {
             <tr key={column.id}>
                 <td> {column.id} </td>
                 <td> {column.data?.arrival} </td>
-                <td> {column.data?.arrival_time} </td>
+                <td> {column.data?.arrivalTime} </td>
                 <td> {column.data?.departure} </td>
-                <td> {column.data?.departure_time} </td>
-                <td> {column.data?.merch_type} </td>
+                <td> {column.data?.departureTime} </td>
+                <td> {column.data?.merchType} </td>
                 <td> {column.data?.mass} </td>
                 <td> {column.data?.volume} </td>
                 <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
@@ -106,9 +106,9 @@ export const fetchTruckTableItems = (items) => {
         return (
             <tr key={column.id}>
                 <td> {column.id} </td>
-                <td> {JSON.stringify(column.data?.truck_type)} </td>
+                <td> {JSON.stringify(column.data?.type)} </td>
                 <td> {column.data?.owner} </td>
-                <td> {column.data?.owner_id} </td>
+                <td> {column.data?.ownerId} </td>
                 <td> {column.data?.status} </td>
                 <td> {column.data?.departure?.name} </td>
                 <td> {column.data?.destination?.name} </td>

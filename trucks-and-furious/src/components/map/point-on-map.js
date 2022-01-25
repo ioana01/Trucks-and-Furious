@@ -56,7 +56,7 @@ const PointOnMap = (props) => {
                 }
 
                 const truckInfo = props.trucksInfo.filter((element) => {
-                    return element.data.truck_id === truck.id;
+                    return element.data.truckId === truck.id;
                 });
 
                 const point = { 
@@ -76,8 +76,8 @@ const PointOnMap = (props) => {
                         `<p>Truck id: ${truck.id}</p> 
                         <p>De la: ${truckInfo[0].data.departure}</p>
                         <p>Pana la: ${truckInfo[0].data.arrival}</p>
-                        <p>Data plecare: ${truckInfo[0].data.departure_time}</p>
-                        <p>Data sosire: ${truckInfo[0].data.arrival_time}</p>
+                        <p>Data plecare: ${truckInfo[0].data.departureTime}</p>
+                        <p>Data sosire: ${truckInfo[0].data.arrivalTime}</p>
                         <p>Pret: ${truckInfo[0].data.totalPrice ? truckInfo[0].data.totalPrice : '-'} RON</p>`
                 }
         

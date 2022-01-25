@@ -87,7 +87,7 @@ class MyPopUp extends Component {
                                             <Link to={{pathname: `/contract/${this.props.requestId}/${request.id}`}}>
                                                 <Button className="w-100 auth-button option-btn" type="submit">
                                                     {/* TODO: change status for truck */}
-                                                    {request.data.truck_id}
+                                                    {request.data.truckId}
                                                 </Button> 
                                             </Link>
                                             <br></br>

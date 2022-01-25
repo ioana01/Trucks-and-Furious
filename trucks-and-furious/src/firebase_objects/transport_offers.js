@@ -1,30 +1,30 @@
 export class TransportOffers {
     constructor(
         arrival,
-        arrival_time,
-        client_price,
+        arrivalTime,
+        clientPrice,
         contact,
         departure,
-        departure_time,
-        destination_price,
+        departureTime,
+        destinationPrice,
         height,
         length,
         mass,
-        truck_type,
+        truckId,
         volume,
         width
     ) {
         this.arrival = arrival;
-        this.arrival_time = arrival_time;
-        this.client_price = client_price;
+        this.arrivalTime = arrivalTime;
+        this.clientPrice = clientPrice;
         this.contact = contact;
         this.departure = departure;
-        this.departure_time = departure_time;
-        this.destination_price = destination_price;
+        this.departureTime = departureTime;
+        this.destinationPrice = destinationPrice;
         this.height = height;
         this.length = length;
         this.mass = mass;
-        this.truck_type = truck_type;
+        this.truckId = truckId;
         this.volume = volume;
         this.width = width;
     }

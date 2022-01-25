@@ -37,7 +37,7 @@ class DemandAndSupplyList extends Component {
                 }
             });
 
-            const message = this.state.currentUserType === 'transportator' ? 'Lista de cereri' : 'Lista de camioane';
+            const message = this.state.currentUserType === 'transportator' ? 'Lista de cereri' : 'Lista de oferte';
             this.setState({ listType: message });
         });
 
@@ -78,12 +78,12 @@ class DemandAndSupplyList extends Component {
     addCerere() {
         // const userData = {
         //     departure: 'Braila',
-        //     departure_time: '2 feb 2022, 10:00',
-        //     maximum_departure_time: '2 feb 2022, 17:00',
+        //     departureTime: '2 feb 2022, 10:00',
+        //     maximumDepartureTime: '2 feb 2022, 17:00',
         //     arrival: 'Oradea',
-        //     arrival_time: '20 feb 2022, 10:00',
-        //     maximum_arrival_time: '20 feb 2022, 17:00',
-        //     merch_type: 'mobila',
+        //     arrivalTime: '20 feb 2022, 10:00',
+        //     maximumArrivalTime: '20 feb 2022, 17:00',
+        //     merchType: 'mobila',
         //     mass: 300,
         //     volume: 200,
         //     budget: 3000,
@@ -94,17 +94,17 @@ class DemandAndSupplyList extends Component {
         // }
         const userData = {
             departure: 'Adjud',
-            departure_time: '15 ian 2022, 10:00',
+            departureTime: '15 ian 2022, 10:00',
             arrival: 'Baia Mare',
-            arrival_time: '25 ian 2022, 10:00',
-            truck_type: 'Iveco',
+            arrivalTime: '25 ian 2022, 10:00',
+            type: 'Iveco',
             mass: 12,
             volume: 2000,
             length: 8,
             width: 4,
             height: 3,
-            client_price: 2,
-            destination_price: 3.5,
+            clientPrice: 2,
+            destinationPrice: 3.5,
             contact: {
                 phone: '0700000000',
                 email: 'test@gmail.com'
@@ -122,8 +122,12 @@ class DemandAndSupplyList extends Component {
         return(
             <>
                 <div className='list-body'>
-                    <div className="d-flex flex-row align-items-baseline">
+                    <div className="p-4">
+                        <h2>Welcome, {this.state.currentUserType} {auth.currentUser.email}</h2>
+                    </div>
+                    <div className="d-flex flex-row align-items-baseline mb-4">
                         <span className='list-type'>{this.state.listType}</span>
+                        <span className="mr-1 list-type">Adauga {this.state.currentUserType === "transportator" ? "oferta" : "cerere"}</span>
                         <a href='/demand-supply-add-form' className='ml-2'><AddIcon/></a>
                     </div>
                     {/* <button onClick={this.addCerere}>Click me!</button> */}
@@ -132,9 +136,9 @@ class DemandAndSupplyList extends Component {
                         return <DemandAndSupplyItem 
                                     departure={element.data.departure}
                                     destination={element.data.arrival} 
-                                    departure_time={element.data.departure_time} 
-                                    arrival_time={element.data.arrival_time}
-                                    merchandise={element.data.merch_type}
+                                    departureTime={element.data.departureTime} 
+                                    arrivalTime={element.data.arrivalTime}
+                                    merchandise={element.data.merchType}
                                     userType={this.state.currentUserType}
                                     id={element.id.replace('-','')}
                                     key={element.id.replace('-','')}/>
@@ -144,9 +148,9 @@ class DemandAndSupplyList extends Component {
                         return <DemandAndSupplyItem 
                                     departure={element.data.departure}
                                     destination={element.data.arrival} 
-                                    departure_time={element.data.departure_time} 
-                                    arrival_time={element.data.arrival_time}
-                                    price={element.data.destination_price}
+                                    departureTime={element.data.departureTime} 
+                                    arrivalTime={element.data.arrivalTime}
+                                    price={element.data.destinationPrice}
                                     userType={this.state.currentUserType}
                                     id={element.id.replace('-','')}
                                     key={element.id.replace('-','')}/>

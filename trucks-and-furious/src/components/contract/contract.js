@@ -61,7 +61,7 @@ class Contract extends Component {
                 const childData = childSnapshot.val();
                 const childId = childSnapshot.key;
 
-                if(childId === this.state.transportOfferData.truck_id) {
+                if(childId === this.state.transportOfferData.truckId) {
                     truckData = childData;
                 }
             });
@@ -69,7 +69,7 @@ class Contract extends Component {
             this.setState({ truckData: truckData });
         });
 
-        database.ref('/trucks').child(this.state.transportOfferData.truck_id).update({'status': 'unavailable'});
+        database.ref('/trucks').child(this.state.transportOfferData.truckId).update({'status': 'unavailable'});
 
         this.createContract();
     }
@@ -88,8 +88,8 @@ class Contract extends Component {
             destination: this.state.transportOfferData.arrival,
             price: this.getTotalPrice(),
             deadline: this.state.transportOfferData.deadline,
-            merch: this.state.transportRequestData.merch_type,
-            truck: this.state.transportOfferData.truck_id
+            merch: this.state.transportRequestData.merchType,
+            truck: this.state.transportOfferData.truckId,
         }
 
         database.ref('contracts').push(contract);
@@ -127,13 +127,13 @@ class Contract extends Component {
             this.state.truckData.departure.latitude,
             this.state.transportRequestData.clientPosition.longitude,
             this.state.truckData.departure.longitude) * 
-            (this.state.transportOfferData.client_price + this.state.transportOfferData.destination_price);
+            (this.state.transportOfferData.clientPrice + this.state.transportOfferData.destinationPrice);
 
         const priceToDestination = this.distance(
             this.state.truckData.departure.latitude,
             this.state.truckData.destination.latitude,
             this.state.truckData.departure.longitude,
-            this.state.truckData.destination.longitude) * this.state.transportOfferData.destination_price;
+            this.state.truckData.destination.longitude) * this.state.transportOfferData.destinationPrice;
 
         const totalPrice = Math.round((priceToClient + priceToDestination) * 100) / 100;
 
@@ -179,10 +179,10 @@ class Contract extends Component {
                     </div>
 
                     <div className='info-section'>
-                        <p>Marfa: {this.state.transportRequestData.merch_type}</p>
+                        <p>Marfa: {this.state.transportRequestData.merchType}</p>
                         <p>Camion: </p>
                         <ul>
-                            <li>type: {this.state.truckData.truck_type}</li>
+                            <li>type: {this.state.truckData.type}</li>
                             <li>height: {this.state.truckData.height} m</li>
                             <li>length: {this.state.truckData.length} m</li>
                             <li>width: {this.state.truckData.width} m</li>

@@ -21,8 +21,8 @@ class DemandAndSupplyItem extends Component {
                                 <div className="col-12 col-lg-9">
                                     <p>Plecare: {this.props.departure}</p>
                                     <p>Destinatie: {this.props.destination}</p>
-                                    <p>Data plecarii: {this.props.departure_time}</p>
-                                    <p>Data sosirii: {this.props.arrival_time}</p>
+                                    <p>Data plecarii: {this.props.departureTime}</p>
+                                    <p>Data sosirii: {this.props.arrivalTime}</p>
                                 </div>
                                 {this.props.userType === 'transportator' ?
                                     <div className="col-12 col-lg-3">

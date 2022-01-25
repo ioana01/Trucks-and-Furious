@@ -50,7 +50,7 @@ class RequestDetails extends Component {
                 const childData = childSnapshot.val();
                 const childId = childSnapshot.key;
 
-                if(childId === this.state.currentItem.truck_id) {
+                if(childId === this.state.currentItem.truckId) {
                     this.setState({ currentTruck: childData })
                 }
             });
@@ -78,15 +78,15 @@ class RequestDetails extends Component {
                             <p>Destinatie: {this.state.currentItem.arrival}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data plecarii: {this.state.currentItem.departure_time}</p>
-                            <p>Data sosirii: {this.state.currentItem.arrival_time}</p>
+                            <p>Data plecarii: {this.state.currentItem.departureTime}</p>
+                            <p>Data sosirii: {this.state.currentItem.arrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data maxima a plecarii: {this.state.currentItem.maximum_departure_time}</p>
-                            <p>Data maxima a sosirii: {this.state.currentItem.maximum_arrival_time}</p>
+                            <p>Data maxima a plecarii: {this.state.currentItem.maximumDepartureTime}</p>
+                            <p>Data maxima a sosirii: {this.state.currentItem.maximumArrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Tipul de marfa: {this.state.currentItem.merch_type}</p>
+                            <p>Tipul de marfa: {this.state.currentItem.merchType}</p>
                             <p>Masa: {this.state.currentItem.mass}kg</p>
                             <p>Volum: {this.state.currentItem.volume}m<sup>3</sup></p>
                         </div>
@@ -113,11 +113,11 @@ class RequestDetails extends Component {
                             <p>Destinatie: {this.state.currentItem.arrival}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data plecarii: {this.state.currentItem.departure_time}</p>
-                            <p>Data sosirii: {this.state.currentItem.arrival_time}</p>
+                            <p>Data plecarii: {this.state.currentItem.departureTime}</p>
+                            <p>Data sosirii: {this.state.currentItem.arrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Tip camion: {this.state.currentTruck.truck_type}</p>
+                            <p>Tip camion: {this.state.currentTruck.type}</p>
                             <p>Masa: {this.state.currentTruck.mass}t</p>
                             <p>Volum: {this.state.currentTruck.volume}m<sup>3</sup></p>
                             <p>Lungime: {this.state.currentTruck.length}m</p>
@@ -125,8 +125,8 @@ class RequestDetails extends Component {
                             <p>Inaltime: {this.state.currentTruck.height}m</p>
                         </div>
                         <div className='info-section'>
-                            <p>Pret/km (pana la client): {this.state.currentItem.client_price} RON</p>
-                            <p>Pret/km (pana la destinatie): {this.state.currentItem.destination_price} RON</p>
+                            <p>Pret/km (pana la client): {this.state.currentItem.clientPrice} RON</p>
+                            <p>Pret/km (pana la destinatie): {this.state.currentItem.destinationPrice} RON</p>
                             <p>Telefon: {this.state.currentItem.contact.phone}</p>
                             <p>Email: {this.state.currentItem.contact.email}</p>
                         </div>

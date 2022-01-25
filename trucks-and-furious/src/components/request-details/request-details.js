@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { Link } from "react-router-dom";
 import './request-details.css';
 import { database } from "../../firebase";
-
+import MyPopUp from '../popup/popup';
+import { Card, Form, Button, Alert } from "react-bootstrap";
 class RequestDetails extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +12,8 @@ class RequestDetails extends Component {
             currentId: `-${this.props.match.params.id}`,
             currentItem: {},
             isSender: false,
-            currentTruck: {}
+            currentTruck: {},
+            isOpen: false
         }
     }
 
@@ -55,8 +57,17 @@ class RequestDetails extends Component {
         });
     }
 
+    togglePopupOpen = (e) => {
+        if (this.state.isOpen == false) {
+            this.setState({ isOpen: true });
+        }
+    }
+
+    handleClose = (e) => {
+        this.setState({ isOpen: false });
+    }
+
     render() {
-        console.log(this.state.currentItem.contact);
         return(
             <>
                 {this.state.currentItem && this.state.currentItem.contact &&
@@ -85,7 +96,14 @@ class RequestDetails extends Component {
                             <p>Email: {this.state.currentItem.contact.email}</p>
                         </div>
                         <div className='btn-container'>
-                            <Link className="btn close-deal-btn" to={{pathname: `/item/${this.props.id}`}}> Preia marfa </Link>
+                            <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
+                                <MyPopUp
+                                    trigger = {this.state.isOpen}
+                                    handleClose = {this.handleClose}
+                                    userType = 'transportator'
+                                    requestId={this.state.currentId}/>
+                                Preia marfa
+                            </Button>
                         </div>
                     </div> 
                 :
@@ -113,7 +131,14 @@ class RequestDetails extends Component {
                             <p>Email: {this.state.currentItem.contact.email}</p>
                         </div>
                         <div className='btn-container'>
-                            <Link className="btn close-deal-btn" to={{pathname: ``}}> Rezerva camion </Link>
+                            <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
+                                <MyPopUp
+                                    trigger = {this.state.isOpen}
+                                    handleClose = {this.handleClose}
+                                    userType = 'expeditor'
+                                    requestId={this.state.currentId}/>
+                                Rezerva Camion
+                            </Button>
                         </div>
                     </div>)}
             </>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './demand-and-supply-list.css';
 import DemandAndSupplyItem from '../demand-and-supply-item/demand-and-supply-item';
-// import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add';
 import { database, auth } from "../../firebase";
 
 class DemandAndSupplyList extends Component {
@@ -32,6 +32,7 @@ class DemandAndSupplyList extends Component {
                 const childData = childSnapshot.val();
 
                 if(childData.email === email) {
+                    localStorage.setItem('user', JSON.stringify(childData));
                     this.setState({ currentUserType: childData.userType });
                 }
             });
@@ -123,7 +124,7 @@ class DemandAndSupplyList extends Component {
                 <div className='list-body'>
                     <div className="d-flex flex-row align-items-baseline">
                         <span className='list-type'>{this.state.listType}</span>
-                        {/* <AddIcon className='ml-2' onClick={this.redirectToAddForm}/> */}
+                        <a href='/demand-supply-add-form' className='ml-2'><AddIcon/></a>
                     </div>
                     {/* <button onClick={this.addCerere}>Click me!</button> */}
                     {this.state.currentUserType === 'transportator' &&
@@ -135,7 +136,8 @@ class DemandAndSupplyList extends Component {
                                     arrival_time={element.data.arrival_time}
                                     merchandise={element.data.merch_type}
                                     userType={this.state.currentUserType}
-                                    id={element.id.replace('-','')}/>
+                                    id={element.id.replace('-','')}
+                                    key={element.id.replace('-','')}/>
                     })}
                     {this.state.currentUserType === 'expeditor' &&
                     this.state.transportOffersList.map((element) => {
@@ -146,8 +148,12 @@ class DemandAndSupplyList extends Component {
                                     arrival_time={element.data.arrival_time}
                                     price={element.data.destination_price}
                                     userType={this.state.currentUserType}
-                                    id={element.id.replace('-','')}/>
+                                    id={element.id.replace('-','')}
+                                    key={element.id.replace('-','')}/>
                     })}
+                    {
+                        this.state.currentUserType === 'admin' ? window.location.href='/admin' : null
+                    }
                 </div>
             </>
         );

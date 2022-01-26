@@ -127,8 +127,15 @@ class DemandAndSupplyList extends Component {
                     </div>
                     <div className="d-flex flex-row align-items-baseline mb-4">
                         <span className='list-type'>{this.state.listType}</span>
-                        <span className="mr-1 list-type">Adauga {this.state.currentUserType === "transportator" ? "oferta" : "cerere"}</span>
+                        <span className="add-form-text">Adauga {this.state.currentUserType === "transportator" ? "oferta" : "cerere"}</span>
                         <a href='/demand-supply-add-form' className='ml-2'><AddIcon/></a>
+                        {
+                            this.state.currentUserType === "transportator" &&
+                            <>
+                                <span className='add-form-text'>Adauga camion</span>
+                                <a href='/add-trucks' className='ml-2'><AddIcon/></a>
+                            </>
+                        }
                     </div>
                     {/* <button onClick={this.addCerere}>Click me!</button> */}
                     {this.state.currentUserType === 'transportator' &&

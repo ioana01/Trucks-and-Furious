@@ -138,7 +138,7 @@ class DemandAndSupplyList extends Component {
                                     destination={element.data.arrival} 
                                     departureTime={element.data.departureTime} 
                                     arrivalTime={element.data.arrivalTime}
-                                    merchandise={element.data.merchType}
+                                    merchandise={element.data.merch}
                                     userType={this.state.currentUserType}
                                     id={element.id.replace('-','')}
                                     key={element.id.replace('-','')}/>

@@ -34,6 +34,7 @@ export default function AddTruckForm() {
             longitude: 0,
             owner: auth.currentUser.email,
             ownerId: ownerId,
+            status: "available"
         }
 
         database.ref('trucks').push(truck);

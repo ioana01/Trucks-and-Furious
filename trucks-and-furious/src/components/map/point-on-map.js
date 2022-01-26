@@ -77,8 +77,8 @@ const PointOnMap = (props) => {
                         <p>De la: ${truckInfo[0].data.departure}</p>
                         <p>Pana la: ${truckInfo[0].data.arrival}</p>
                         <p>Data plecare: ${truckInfo[0].data.departureTime}</p>
-                        <p>Data sosire: ${truckInfo[0].data.arrivalTime}</p>
-                        <p>Pret: ${truckInfo[0].data.totalPrice ? truckInfo[0].data.totalPrice : '-'} RON</p>`
+                        <p>Data sosire: ${truckInfo[0].data.arrivalTime}</p>`
+                        // <p>Pret: ${truckInfo[0].data.totalPrice ? truckInfo[1].data.totalPrice : '-'} RON</p>`
                 }
         
                 const pointGraphic = new Graphic({

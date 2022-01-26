@@ -148,6 +148,7 @@ export default function DemandAndSupplyAddForm() {
             merch: merches.find(m => m.data.name === selectedMerch.value)?.data.name,
             weight: weight,
             volume: volume,
+            status: "available"
         }
         database.ref('transport_requests').push(transportRequest);
     }
@@ -172,6 +173,7 @@ export default function DemandAndSupplyAddForm() {
             },
             totalCost: totalCost,
             contact: contact,
+            status: "available"
         }
 
         database.ref('transport_offers').push(transportOffer);

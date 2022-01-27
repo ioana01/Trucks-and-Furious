@@ -87,7 +87,7 @@ class RequestDetails extends Component {
                         </div>
                         <div className='info-section'>
                             <p><strong>Tipul de marfă:</strong> {this.state.currentItem.merch}</p>
-                            <p><strong>Masa:</strong> {this.state.currentItem.weight}kg</p>
+                            <p><strong>Masa:</strong> {this.state.currentItem.weight}t</p>
                             <p><strong>Volum:</strong> {this.state.currentItem.volume}m<sup>3</sup></p>
                         </div>
                         <div className='info-section'>

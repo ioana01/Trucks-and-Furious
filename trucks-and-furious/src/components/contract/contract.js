@@ -207,19 +207,19 @@ export default function Contract(props) {
                         {transportRequestData.data && transportOfferData.data &&
                         <p>Tarif: {getTotalPrice()} RON</p>}
 
-                        <p>Termen de plata: {transportOfferData.data.deadline}</p>
+                        <p>Termen de livrare limita: {transportRequestData.data.maximumArrivalTime}</p>
                     </div>
 
                     <div className='info-section'>
                         <p>Marfa: {transportRequestData.data.merch}</p>
                         <p>Camion: </p>
                         <ul>
-                            <li>type: {truck?.type}</li>
-                            <li>height: {truck?.height} m</li>
-                            <li>length: {truck?.length} m</li>
-                            <li>width: {truck?.width} m</li>
-                            <li>weight: {truck?.weight} kg</li>
-                            <li>volume: {truck?.volume} m<sup>3</sup></li>
+                            <li>marca: {transportOfferData?.data.truck.type}</li>
+                            <li>inaltime: {transportOfferData?.data.truck.height} m</li>
+                            <li>lungime: {transportOfferData?.data.truck.length} m</li>
+                            <li>latime: {transportOfferData?.data.truck.width} m</li>
+                            <li>greutate: {transportOfferData?.data.truck.weight} kg</li>
+                            <li>volum: {transportOfferData?.data.truck.volume} m<sup>3</sup></li>
                         </ul>
                     </div>
 

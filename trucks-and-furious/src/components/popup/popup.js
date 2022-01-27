@@ -97,7 +97,7 @@ export default function MyPopUp(props){
                                         <Link to={{pathname: `/contract/${props.requestId}/${request.id}`}}>
                                             <Button className="w-100 auth-button option-btn" type="submit">
                                                 {/* TODO: change status for truck */}
-                                                { fetchTrucksDetails(request.data.truckId) }
+                                                { fetchTrucksDetails(request.data.truck.id) }
                                             </Button> 
                                         </Link>
                                         <br></br>

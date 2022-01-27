@@ -88,6 +88,7 @@ function DemandAndSupplyList(props) {
         if (!transportRequestsList.length || currentUserType === 'transportator')
             return;
 
+        console.log(auth.currentUser.email);
         const personalPostings = transportRequestsList.filter((item) => {
             return item.data.contact.email === auth.currentUser.email;
         })
@@ -98,6 +99,7 @@ function DemandAndSupplyList(props) {
         if (!transportOffersList.length || currentUserType === 'expeditor')
             return;
 
+        console.log(auth.currentUser.email);
         const personalPostings = transportOffersList.filter((item) => {
             return item.data.contact.email === auth.currentUser.email;
         })

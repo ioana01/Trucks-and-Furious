@@ -10,7 +10,7 @@ class DemandAndSupplyItem extends Component {
 
     render() {
         return(
-            <div className="container item-container">
+            <div className={`container item-container ${this.props.isRecommended ? "highlighted-item" : ""}`}>
                 <div className="row">
                     <div className="col-12 col-lg-4 left">
                         <img src={logo} alt="logo"/>

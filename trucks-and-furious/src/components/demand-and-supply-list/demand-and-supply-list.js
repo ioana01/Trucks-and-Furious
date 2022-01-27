@@ -122,11 +122,9 @@ function DemandAndSupplyList(props) {
         setHighlitedItems(highlited)
     }, [transportRequestsList, transportOffersList, myPostings]);
 
-    // function checkIfReccomended(list, itemId) {
-    //     list.forEach((x) => {
-    //         if (x.id === itemId)
-    //     })
-    // }
+    function isRecommended(list, itemId) {
+        return list.indexOf(itemId) > -1;
+    }
 
     return(
         <>
@@ -149,6 +147,7 @@ function DemandAndSupplyList(props) {
                 {currentUserType === 'transportator' &&
                 transportRequestsList.map((element) => {
                     return <DemandAndSupplyItem
+                                isRecommended={isRecommended(highlitedItems, element.id)}
                                 departure={element.data.departure}
                                 destination={element.data.arrival} 
                                 departureTime={element.data.departureTime} 
@@ -161,6 +160,7 @@ function DemandAndSupplyList(props) {
                 {currentUserType === 'expeditor' &&
                 transportOffersList.map((element) => {
                     return <DemandAndSupplyItem 
+                                isRecommended={isRecommended(highlitedItems, element.id)}
                                 departure={element.data.departure}
                                 destination={element.data.arrival} 
                                 departureTime={element.data.departureTime} 

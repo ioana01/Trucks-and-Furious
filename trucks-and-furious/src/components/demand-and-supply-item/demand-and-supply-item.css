@@ -25,3 +25,7 @@
     background-color: #386fe7;
     color: #fff;
 }
+
+.highlighted-item {
+    border: 5px solid #BFFF00;
+}

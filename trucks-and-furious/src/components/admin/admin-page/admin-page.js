@@ -9,13 +9,13 @@ import AdminSidebar from "./admin-sidebar";
 import { asyncFetchUsers
         ,asyncFetchTrucks
         ,asyncFetchContracts
-        ,asyncFetchStocks
+        ,asyncFetchMerch
         ,asyncFetchTransportOffers
         ,asyncFetchTransportRequests } from "./admin-fetch-effects";
 
 import { fetchUserTableTitles
         ,fetchTruckTableTitles
-        ,fetchStocksTableTitles
+        ,fetchMerchTableTitles
         ,fetchContractTableTitles
         ,fetchTransportRequestsTableTitles
         ,fetchTransportOffersTableTitles } from "./admin-fetch-table-details";
@@ -28,7 +28,7 @@ export default function AdminPage() {
     const [account, setAccount] = useState();
     const [users, setUsers] = useState([]);
     const [trucks, setTrucks] = useState([]);
-    const [stocks, setStocks] = useState([]);
+    const [merch, setMerch] = useState([]);
     const [contracts, setContracts] = useState([]);
     const [transportOffers, setTransportOffers] = useState([]);
     const [transportRequests, setTransportRequests] = useState([]);
@@ -54,9 +54,9 @@ export default function AdminPage() {
     }, []);
 
     useEffect(() => {
-        const stocksRefs = database.ref('stocks');
-        const fetchStocks = async () => asyncFetchStocks(stocksRefs, setStocks);
-        fetchStocks();
+        const merchRefs = database.ref('merch');
+        const fetchMerch = async () => asyncFetchMerch(merchRefs, setMerch);
+        fetchMerch();
     }, []);
 
     useEffect(() => {
@@ -72,7 +72,7 @@ export default function AdminPage() {
     }, []);
 
     useEffect(() => {
-        const transportRequestsRefs = database.ref('transport_requests');
+        const transportRequestsRefs = database.ref('transport_requestss');
         const fetchTransportRequests = async () => asyncFetchTransportRequests(transportRequestsRefs, setTransportRequests);
         fetchTransportRequests();
     }, []);
@@ -88,9 +88,9 @@ export default function AdminPage() {
             setDashboard({ ...dashboard, columns: titles, items: trucks });
             return;
         }
-        if (dashboard.sidebarChoice === "Stocks") {
-            const titles = fetchStocksTableTitles();
-            setDashboard({ ...dashboard, columns: titles, items: stocks });
+        if (dashboard.sidebarChoice === "Merch") {
+            const titles = fetchMerchTableTitles();
+            setDashboard({ ...dashboard, columns: titles, items: merch });
             return;
         }
         if (dashboard.sidebarChoice === "Contracts") {
@@ -110,7 +110,7 @@ export default function AdminPage() {
         }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [users, trucks, stocks, contracts, transportRequests, transportOffers, dashboard.sidebarChoice]);
+    }, [users, trucks, merch, contracts, transportRequests, transportOffers, dashboard.sidebarChoice]);
 
     const handleSidebarChoice = (choice) => {
         setDashboard({...dashboard, sidebarChoice: choice});

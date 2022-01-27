@@ -11,11 +11,12 @@ export default function Contract(props) {
     const [transportRequestData, setTransportRequestData] = useState({id: null, data: null});
     const [transportOfferData, setTransportOfferData] = useState({id: null, data: null});
     const [truck, setTruck] = useState();
+    const [contractNonce, setContractNonce] = useState('');
 
     useEffect(() => {
         let transportRequestData;
         let transportRequestId;
-        const transportRequestsRefs = database.ref('transport_requests');
+        const transportRequestsRefs = database.ref('transport_requestss');
 
         const fetchTransportRequestData = async () => {
             await transportRequestsRefs.on('value', snapshot => {
@@ -98,6 +99,9 @@ export default function Contract(props) {
 
 
     const createContract = () => {
+
+        const nonce = (Math.trunc(Math.random() % 1000000 * 100000000)).toString();
+
         const contract = {
             carry: {
                 email: transportOfferData.data.contact.email,
@@ -113,12 +117,14 @@ export default function Contract(props) {
             destination: transportOfferData.data.arrival,
             clientPosition: transportRequestData.data.departure,
             totalPrice: getTotalPrice(),
-            deadline: transportOfferData.data.deadline,
-            merch: transportRequestData.data.merchType,
-            truck: transportOfferData.data.truckId,
+            deadline: transportRequestData.data.maximumArrivalTime,
+            merch: transportRequestData.data.merch,
+            truck: transportOfferData.data.truck.id,
+            nonce: nonce
         }
 
         database.ref('contracts').push(contract);
+        setContractNonce(nonce);
     }
 
     const distance = (lat1, lat2, lon1, lon2) => {
@@ -205,7 +211,7 @@ export default function Contract(props) {
                     </div>
 
                     <div className='info-section'>
-                        <p>Marfa: {transportRequestData.data.merchType}</p>
+                        <p>Marfa: {transportRequestData.data.merch}</p>
                         <p>Camion: </p>
                         <ul>
                             <li>type: {truck?.type}</li>
@@ -218,6 +224,8 @@ export default function Contract(props) {
                     </div>
 
                     <p>Obs: Acest contract reprezintă angajamentul ferm între cele doua parti</p>
+
+                    <a href={`/map/${contractNonce}`}><span>Visualize map</span></a>
                 </div>}
         </>
     );

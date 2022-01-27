@@ -1,22 +1,32 @@
 export const defaultLocations = () => { return [
     {
         name: 'Bucuresti',
-        y: 44.4268,
-        x: 26.1025
+        y: 44.427,
+        x: 26.102
     },
     {
         name: 'Slobozia',
-        y: 44.5629,
-        x: 27.3614
+        y: 44.563,
+        x: 27.361
     },
     {
         name: "Ploiesti",
-        y: 44.9367,
-        x: 26.0129
+        y: 44.937,
+        x: 26.013
     },
     {
         name: "Giurgiu",
-        y: 43.9082,
-        x: 25.9667
+        y: 43.909,
+        x: 25.967
+    },
+    {
+        name: "Buzau",
+        y: 45.137,
+        x: 26.817
+    },
+    {
+        name: "Braila",
+        y: 45.265,
+        x: 27.959
     }
 ]};

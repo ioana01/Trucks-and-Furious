@@ -10,7 +10,7 @@ class RequestDetails extends Component {
 
         this.state = {
             currentId: `-${this.props.match.params.id}`,
-            currentItem: {},
+            currentItem: null,
             isSender: false,
             currentTruck: {},
             isOpen: false
@@ -18,7 +18,7 @@ class RequestDetails extends Component {
     }
 
     async componentDidMount() {
-        const transportRequestsRefs = database.ref('transport_requests');
+        const transportRequestsRefs = database.ref('transport_requestss');
         const transportOffersRefs = database.ref('transport_offers');
         const trucksRefs = database.ref('trucks');
 
@@ -86,7 +86,7 @@ class RequestDetails extends Component {
                             <p><strong>Data maximă sosirii:</strong> {this.state.currentItem.maximumArrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p><strong>Tipul de marfă:</strong> {this.state.currentItem.merchType}</p>
+                            <p><strong>Tipul de marfă:</strong> {this.state.currentItem.merch}</p>
                             <p><strong>Masa:</strong> {this.state.currentItem.weight}kg</p>
                             <p><strong>Volum:</strong> {this.state.currentItem.volume}m<sup>3</sup></p>
                         </div>
@@ -117,12 +117,12 @@ class RequestDetails extends Component {
                             <p><strong>Data sosirii:</strong> {this.state.currentItem.arrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p><strong>Tip camion:</strong> {this.state.currentTruck.type}</p>
-                            <p><strong>Masa:</strong> {this.state.currentTruck.weight}</p>
-                            <p><strong>Volum:</strong> {this.state.currentTruck.volume}t<sup>3</sup></p>
-                            <p><strong>Lungime:</strong> {this.state.currentTruck.length}m</p>
-                            <p><strong>Lățime:</strong> {this.state.currentTruck.width}m</p>
-                            <p><strong>Înălțime:</strong> {this.state.currentTruck.height}m</p>
+                            <p><strong>Tip camion:</strong> {this.state.currentItem.truck.type}</p>
+                            <p><strong>Masa:</strong> {this.state.currentItem.truck.weight}t</p>
+                            <p><strong>Volum:</strong> {this.state.currentItem.truck.volume}m<sup>3</sup></p>
+                            <p><strong>Lungime:</strong> {this.state.currentItem.truck.length}m</p>
+                            <p><strong>Lățime:</strong> {this.state.currentItem.truck.width}m</p>
+                            <p><strong>Înălțime:</strong> {this.state.currentItem.truck.height}m</p>
                         </div>
                         <div className='info-section'>
                             <p><strong>Preț/km (până la client):</strong> {this.state.currentItem.clientPrice} RON</p>

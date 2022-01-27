@@ -37,14 +37,15 @@ function DemandAndSupplyList(props) {
     }, [currentUserType])
 
     useEffect(() => {
-        const transportRequestsRefs = database.ref('transport_requests');
+        const transportRequestsRefs = database.ref('transport_requestss');
+
         let transportRequestsList = [];
         const fetchRequests = async () => {
             await transportRequestsRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                     const childId = childSnapshot.key;
-    
+
                     transportRequestsList.push(
                         {
                             data: childData,
@@ -152,7 +153,7 @@ function DemandAndSupplyList(props) {
                                 destination={element.data.arrival} 
                                 departureTime={element.data.departureTime} 
                                 arrivalTime={element.data.arrivalTime}
-                                merchandise={element.data.merchType}
+                                merchandise={element.data.merch}
                                 userType={currentUserType}
                                 id={element.id.replace('-','')}
                                 key={element.id.replace('-','')}/>

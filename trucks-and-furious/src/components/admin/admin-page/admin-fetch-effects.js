@@ -26,17 +26,17 @@ export const asyncFetchTrucks = async (trucksRefs, setTrucks) => {
     });
 }
 
-export const asyncFetchStocks = async (stocksRefs, setStocks) => {
-    await stocksRefs.on('value', snapshot => {
-        const stocks = [];
+export const asyncFetchMerch = async (merchRefs, setMerch) => {
+    await merchRefs.on('value', snapshot => {
+        const merch = [];
 
         snapshot.forEach(childSnapshot => {
             const childData = childSnapshot.val();
             const childId = childSnapshot.key;
-            stocks.push({ data: childData, id: childId });
+            merch.push({ data: childData, id: childId });
         });
 
-        setStocks(stocks);
+        setMerch(merch);
     });
 }
 

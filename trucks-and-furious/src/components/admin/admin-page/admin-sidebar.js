@@ -24,10 +24,10 @@ export default function AdminSidebar({ handleSidebarChoice, sidebarChoice }) {
                     <UsersIcon className="sidebar_icon"/>
                     <span className="ml-2">Users</span>
                 </li>
-                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Stocks")}`}
-                    onClick={() => handleSidebarChoice("Stocks")}>
+                <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Merch")}`}
+                    onClick={() => handleSidebarChoice("Merch")}>
                     <ShoppingCartIcon className="sidebar_icon"/>
-                    <span className="ml-2">Stocks</span>
+                    <span className="ml-2">Merchandise</span>
                 </li>
                 <li className={`nav-item d-flex align-items-center sidebar_item mt-2 ${isCurrentSidebarChoice("Contracts")}`}
                     onClick={() => handleSidebarChoice("Contracts")}>

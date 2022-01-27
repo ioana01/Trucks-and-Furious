@@ -38,6 +38,7 @@ export default function AddTruckForm() {
         }
 
         database.ref('trucks').push(truck);
+        window.location.reload();
     }
 
     useEffect(() => {

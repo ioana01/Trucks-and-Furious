@@ -5,10 +5,10 @@ export const fetchUserTableTitles = () => {
 }
 
 export const fetchTruckTableTitles = () => {
-    return ["id", "type", "owner", "ownerId", "status", "departure", "destination"];
+    return ["id", "type", "owner", "ownerId", "status"];
 }
 
-export const fetchStocksTableTitles = () => {
+export const fetchMerchTableTitles = () => {
     return ["id", "name"];
 }
 
@@ -17,14 +17,14 @@ export const fetchContractTableTitles = () => {
 }
 
 export const fetchTransportRequestsTableTitles = () => {
-    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "merchType", "weight", "volume"];
+    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "merch", "weight", "volume"];
 }
 
 export const fetchTransportOffersTableTitles = () => {
     return ["id", "arrival", "arrivalTime", "departure", "departureTime", "type", "totalPrice"];
 }
 
-export const fetchTransportOffersTableItems = (items) => {
+export const fetchTransportOffersTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
@@ -35,13 +35,14 @@ export const fetchTransportOffersTableItems = (items) => {
                 <td> {column.data?.departureTime} </td>
                 <td> {column.data?.truckId} </td>
                 <td> {column.data?.totalPrice} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("Offer", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });
 }
 
-export const fetchTransportRequestsTableItems = (items) => {
+export const fetchTransportRequestsTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
@@ -50,16 +51,17 @@ export const fetchTransportRequestsTableItems = (items) => {
                 <td> {column.data?.arrivalTime} </td>
                 <td> {column.data?.departure} </td>
                 <td> {column.data?.departureTime} </td>
-                <td> {column.data?.merchType} </td>
+                <td> {column.data?.merch} </td>
                 <td> {column.data?.weight} </td>
                 <td> {column.data?.volume} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("Request", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });
 }
 
-export const fetchContractTableItems = (items) => {
+export const fetchContractTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
@@ -69,13 +71,14 @@ export const fetchContractTableItems = (items) => {
                 <td> {JSON.stringify(column.data?.destination)} </td>
                 <td> {column.data?.carry?.email} </td>
                 <td> {column.data?.sender?.email} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("Contract", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });
 }
 
-export const fetchUserTableItems = (items) => {
+export const fetchUserTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
@@ -83,25 +86,27 @@ export const fetchUserTableItems = (items) => {
                 <td> {column.data?.email} </td>
                 <td> {column.data?.name} </td>
                 <td> {column.data?.userType} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("User", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });
 }
 
-export const fetchStockTableItems = (items) => {
+export const fetchMerchTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
                 <td> {column.id} </td>
                 <td> {column.data?.name} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("Merch", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });
 }
 
-export const fetchTruckTableItems = (items) => {
+export const fetchTruckTableItems = (items, handleDelete) => {
     return items.map((column, index) => {
         return (
             <tr key={column.id}>
@@ -110,9 +115,8 @@ export const fetchTruckTableItems = (items) => {
                 <td> {column.data?.owner} </td>
                 <td> {column.data?.ownerId} </td>
                 <td> {column.data?.status} </td>
-                <td> {column.data?.departure?.name} </td>
-                <td> {column.data?.destination?.name} </td>
-                <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
+                <td><button onClick = {() => handleDelete("Truck", column.id)} 
+                    className="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         )
     });

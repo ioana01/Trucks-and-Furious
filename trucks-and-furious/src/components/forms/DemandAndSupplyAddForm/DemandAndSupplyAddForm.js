@@ -152,14 +152,14 @@ export default function DemandAndSupplyAddForm() {
             merch: merches.find(m => m.data.name === selectedMerch.value)?.data.name,
             weight: weight,
             volume: volume,
-            status: "available"
         }
-        database.ref('transport_requests').push(transportRequest);
+        database.ref('transport_requestss').push(transportRequest);
+        window.location.reload();
     }
 
     const handleTransportatorFormSubmit = () => {
 
-        const chosenTruck = trucks.find(truck => truck.data.type === selectedTruck.value.split('-')[0]);
+        const chosenTruck = trucks.find(truck => truck.data.type === selectedTruck.split('-')[0]);
 
         const transportOffer = {
             ownerId: ownerId,
@@ -174,15 +174,16 @@ export default function DemandAndSupplyAddForm() {
                 width: chosenTruck.data.width,
                 height: chosenTruck.data.height,
                 length: chosenTruck.data.length,
+                weight: chosenTruck.data.weight,
             },
             totalPrice: 0,
             destinationPrice: destinationPrice,
             clientPrice: clientPrice,
             contact: contact,
-            status: "available"
         }
 
         database.ref('transport_offers').push(transportOffer);
+        window.location.reload();
     }
 
     return (

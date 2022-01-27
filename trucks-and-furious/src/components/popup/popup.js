@@ -12,7 +12,7 @@ export default function MyPopUp(props){
     useEffect(() => {
         let requests = [];
         const requestsRefs = props.userType === 'expeditor' 
-            ? database.ref('transport_requests') : database.ref('transport_offers');
+            ? database.ref('transport_requestss') : database.ref('transport_offers');
         
         const fetchRequests = async () => {
             await requestsRefs.on('value', snapshot => {
@@ -20,7 +20,7 @@ export default function MyPopUp(props){
                     const childData = childSnapshot.val();
                     const childId = childSnapshot.key;
     
-                    if(childData.contact.email === auth.currentUser.email && childData.status === 'available') {
+                    if(childData.contact.email === auth.currentUser.email) {
                         requests.push({ id: childId, data: childData });
                     }
                 });

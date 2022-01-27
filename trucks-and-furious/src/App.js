@@ -38,7 +38,7 @@ function App() {
               <PrivateRoute exact path="/demand-supply-add-form" component={DemandAndSupplyAddForm} />
               <PrivateRoute exact path="/add-trucks" component={AddTruckForm} />
               <PrivateRoute exact path="/item/:id" component={RequestDetails}/>
-              <PrivateRoute exact path="/map" component={ArgcisMap}/>
+              <PrivateRoute exact path="/map/:contractNonce" component={ArgcisMap}/>
               <PrivateRoute exact path="/contract/:clientRequest/:myRequestId" component={Contract}/>
               <PrivateRoute exact path="/contracts" component={ContractsDisplay}/>
               <PrivateRoute exact path="/" component={DemandAndSupplyList} />

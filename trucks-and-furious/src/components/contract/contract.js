@@ -186,7 +186,7 @@ class Contract extends Component {
                             <li>height: {this.state.truckData.height} m</li>
                             <li>length: {this.state.truckData.length} m</li>
                             <li>width: {this.state.truckData.width} m</li>
-                            <li>mass: {this.state.truckData.mass} kg</li>
+                            <li>weight: {this.state.truckData.weight} kg</li>
                             <li>volume: {this.state.truckData.volume} m<sup>3</sup></li>
                         </ul>
                     </div>

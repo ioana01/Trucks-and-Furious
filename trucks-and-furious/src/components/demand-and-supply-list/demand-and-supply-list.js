@@ -25,14 +25,16 @@ function DemandAndSupplyList(props) {
                         localStorage.setItem('user', JSON.stringify(childData));
                         setCurrentUserType(childData.userType);
                     }
-                });
-
-                const message = currentUserType === 'transportator' ? 'Lista de cereri' : 'Lista de oferte';
-                setListType(message);
+                });      
             });
         };
         fetchUsers();
     }, [])
+
+    useEffect(() => {
+        const message = currentUserType === 'transportator' ? 'Lista de cereri' : 'Lista de oferte';
+        setListType(message);
+    }, [currentUserType])
 
     useEffect(() => {
         const transportRequestsRefs = database.ref('transport_requests');
@@ -163,7 +165,8 @@ function DemandAndSupplyList(props) {
                                 destination={element.data.arrival} 
                                 departureTime={element.data.departureTime} 
                                 arrivalTime={element.data.arrivalTime}
-                                price={element.data.destinationPrice}
+                                destinationPrice={element.data.destinationPrice}
+                                clientPrice={element.data.clientPrice}
                                 userType={currentUserType}
                                 id={element.id.replace('-','')}
                                 key={element.id.replace('-','')}/>

@@ -17,7 +17,7 @@ export const fetchContractTableTitles = () => {
 }
 
 export const fetchTransportRequestsTableTitles = () => {
-    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "merchType", "mass", "volume"];
+    return ["id", "arrival", "arrivalTime", "departure", "departureTime", "merchType", "weight", "volume"];
 }
 
 export const fetchTransportOffersTableTitles = () => {
@@ -51,7 +51,7 @@ export const fetchTransportRequestsTableItems = (items) => {
                 <td> {column.data?.departure} </td>
                 <td> {column.data?.departureTime} </td>
                 <td> {column.data?.merchType} </td>
-                <td> {column.data?.mass} </td>
+                <td> {column.data?.weight} </td>
                 <td> {column.data?.volume} </td>
                 <td><a href="/admin" className="btn btn-sm btn-primary">View</a></td>
             </tr>

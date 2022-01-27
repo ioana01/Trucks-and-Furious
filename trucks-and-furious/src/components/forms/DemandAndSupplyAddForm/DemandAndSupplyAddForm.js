@@ -14,7 +14,10 @@ export default function DemandAndSupplyAddForm() {
     const [arrivalTime, setArrivalTime] = useState(null);
     const [trucks, setTrucks] = useState([]);
     const [merches, setMerches] = useState([]);
-    const [totalCost, setTotalCost] = useState(0);
+
+    const [clientPrice, setClientPrice] = useState(0);
+    const [destinationPrice, setDestinationPrice] = useState(0);
+
     const [contact, setContact] = useState({ email: '', phone: '' });
     const [ownerId, setOwnerId] = useState();
     const [maximumDepartureTime, setMaximumDepartureTime] = useState(null);
@@ -113,7 +116,8 @@ export default function DemandAndSupplyAddForm() {
     const handlePhone = (event) => setContact({ ...contact, phone: event.target.value });
     const handleDeparture = (event) => setDeparture(event.target.value);
     const handleDepartureTime = (event) => setDepartureTime(event);
-    const handleTotalCost = (event) => setTotalCost(Number(event.target.value));
+    const handleDestinationPrice = (event) => setDestinationPrice(Number(event.target.value));
+    const handleClientPrice = (event) => setClientPrice(Number(event.target.value));
     const handleMaximumDepartureTime = (event) => setMaximumDepartureTime(event);
     const handleMaximumArrivalTime = (event) => setMaximumArrivalTime(event);
     const handleWeight = (event) => setWeight(Number(event.target.value));
@@ -171,7 +175,9 @@ export default function DemandAndSupplyAddForm() {
                 height: chosenTruck.data.height,
                 length: chosenTruck.data.length,
             },
-            totalCost: totalCost,
+            totalPrice: 0,
+            destinationPrice: destinationPrice,
+            clientPrice: clientPrice,
             contact: contact,
             status: "available"
         }
@@ -247,10 +253,19 @@ export default function DemandAndSupplyAddForm() {
                             { 
                                 user.userType === 'transportator' ?
                                     (<div className="form-group">
-                                        <label htmlFor="total-cost-input">Cost total:</label>
-                                        <input type="number" className="form-control" id="total-cost-input" placeholder="Please enter the total cost..."
-                                            onChange={handleTotalCost}
-                                            value={totalCost}/>
+                                        <label htmlFor="destination-price-input">Pret per km. (cu marfa):</label>
+                                        <input type="number" className="form-control" id="destination-price-input" placeholder="Please enter the destination price..."
+                                            onChange={handleDestinationPrice}
+                                            value={destinationPrice}/>
+                                    </div>) : null
+                            }
+                            { 
+                                user.userType === 'transportator' ?
+                                    (<div className="form-group">
+                                        <label htmlFor="client-price-input">Pret per km. (fara marfa):</label>
+                                        <input type="number" className="form-control" id="client-price-input" placeholder="Please enter the client price..."
+                                            onChange={handleClientPrice}
+                                            value={clientPrice}/>
                                     </div>) : null
                             }
                             {

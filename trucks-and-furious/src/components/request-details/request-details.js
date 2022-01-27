@@ -69,31 +69,31 @@ class RequestDetails extends Component {
 
     render() {
         return(
-            <>
+            <div style={{fontSize: "1.1rem"}}>
                 {this.state.currentItem && this.state.currentItem.contact &&
                 (!this.state.isSender ? 
                     <div className='item-info'>
                         <div className='info-section'>
-                            <p>Plecare: {this.state.currentItem.departure}</p>
-                            <p>Destinatie: {this.state.currentItem.arrival}</p>
+                            <p><strong>Plecare:</strong> {this.state.currentItem.departure}</p>
+                            <p><strong>Destinație:</strong> {this.state.currentItem.arrival}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data plecarii: {this.state.currentItem.departureTime}</p>
-                            <p>Data sosirii: {this.state.currentItem.arrivalTime}</p>
+                            <p><strong>Data plecării:</strong> {this.state.currentItem.departureTime}</p>
+                            <p><strong>Data sosirii:</strong> {this.state.currentItem.arrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data maxima a plecarii: {this.state.currentItem.maximumDepartureTime}</p>
-                            <p>Data maxima a sosirii: {this.state.currentItem.maximumArrivalTime}</p>
+                            <p><strong>Data maximă a plecării:</strong> {this.state.currentItem.maximumDepartureTime}</p>
+                            <p><strong>Data maximă sosirii:</strong> {this.state.currentItem.maximumArrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Tipul de marfa: {this.state.currentItem.merchType}</p>
-                            <p>Masa: {this.state.currentItem.mass}kg</p>
-                            <p>Volum: {this.state.currentItem.volume}m<sup>3</sup></p>
+                            <p><strong>Tipul de marfă:</strong> {this.state.currentItem.merchType}</p>
+                            <p><strong>Masa:</strong> {this.state.currentItem.weight}kg</p>
+                            <p><strong>Volum:</strong> {this.state.currentItem.volume}m<sup>3</sup></p>
                         </div>
                         <div className='info-section'>
-                            <p>Buget disponibil: {this.state.currentItem.budget} RON</p>
-                            <p>Telefon: {this.state.currentItem.contact.phone}</p>
-                            <p>Email: {this.state.currentItem.contact.email}</p>
+                            <p><strong>Buget disponibil:</strong> {this.state.currentItem.budget} RON</p>
+                            <p><strong>Telefon:</strong> {this.state.currentItem.contact.phone}</p>
+                            <p><strong>Email:</strong> {this.state.currentItem.contact.email}</p>
                         </div>
                         <div className='btn-container'>
                             <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
@@ -109,26 +109,26 @@ class RequestDetails extends Component {
                 :
                     <div className='item-info'>
                         <div className='info-section'>
-                            <p>Plecare: {this.state.currentItem.departure}</p>
-                            <p>Destinatie: {this.state.currentItem.arrival}</p>
+                            <p><strong>Plecare: </strong>{this.state.currentItem.departure}</p>
+                            <p><strong>Destinație: </strong>{this.state.currentItem.arrival}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Data plecarii: {this.state.currentItem.departureTime}</p>
-                            <p>Data sosirii: {this.state.currentItem.arrivalTime}</p>
+                            <p><strong>Data plecării:</strong> {this.state.currentItem.departureTime}</p>
+                            <p><strong>Data sosirii:</strong> {this.state.currentItem.arrivalTime}</p>
                         </div>
                         <div className='info-section'>
-                            <p>Tip camion: {this.state.currentTruck.type}</p>
-                            <p>Masa: {this.state.currentTruck.mass}t</p>
-                            <p>Volum: {this.state.currentTruck.volume}m<sup>3</sup></p>
-                            <p>Lungime: {this.state.currentTruck.length}m</p>
-                            <p>Latime: {this.state.currentTruck.width}m</p>
-                            <p>Inaltime: {this.state.currentTruck.height}m</p>
+                            <p><strong>Tip camion:</strong> {this.state.currentTruck.type}</p>
+                            <p><strong>Masa:</strong> {this.state.currentTruck.weight}</p>
+                            <p><strong>Volum:</strong> {this.state.currentTruck.volume}t<sup>3</sup></p>
+                            <p><strong>Lungime:</strong> {this.state.currentTruck.length}m</p>
+                            <p><strong>Lățime:</strong> {this.state.currentTruck.width}m</p>
+                            <p><strong>Înălțime:</strong> {this.state.currentTruck.height}m</p>
                         </div>
                         <div className='info-section'>
-                            <p>Pret/km (pana la client): {this.state.currentItem.clientPrice} RON</p>
-                            <p>Pret/km (pana la destinatie): {this.state.currentItem.destinationPrice} RON</p>
-                            <p>Telefon: {this.state.currentItem.contact.phone}</p>
-                            <p>Email: {this.state.currentItem.contact.email}</p>
+                            <p><strong>Preț/km (până la client):</strong> {this.state.currentItem.clientPrice} RON</p>
+                            <p><strong>Preț/km (până la destinație):</strong> {this.state.currentItem.destinationPrice} RON</p>
+                            <p><strong>Telefon:</strong> {this.state.currentItem.contact.phone}</p>
+                            <p><strong>Email:</strong> {this.state.currentItem.contact.email}</p>
                         </div>
                         <div className='btn-container'>
                             <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
@@ -137,11 +137,11 @@ class RequestDetails extends Component {
                                     handleClose = {this.handleClose}
                                     userType = 'expeditor'
                                     requestId={this.state.currentId}/>
-                                Rezerva Camion
+                                Rezervă camion
                             </Button>
                         </div>
                     </div>)}
-            </>
+            </div>
         );
     }
 }

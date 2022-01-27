@@ -18,18 +18,19 @@ class DemandAndSupplyItem extends Component {
                     <div className="col-12 col-lg-8">
                         <div className="container right-container">
                             <div className="row">
-                                <div className="col-12 col-lg-9">
+                                <div className="col-12 col-lg-8">
                                     <p>Plecare: {this.props.departure}</p>
                                     <p>Destinatie: {this.props.destination}</p>
                                     <p>Data plecarii: {this.props.departureTime}</p>
                                     <p>Data sosirii: {this.props.arrivalTime}</p>
                                 </div>
                                 {this.props.userType === 'transportator' ?
-                                    <div className="col-12 col-lg-3">
-                                        <p>{this.props.merchandise}</p>
+                                    <div className="col-12 col-lg-4">
+                                        <p>Tip marfa: {this.props.merchandise}</p>
                                     </div> :
-                                    <div className="col-12 col-lg-3">
-                                        <p>{this.props.price} RON/km</p>
+                                    <div className="col-12 col-lg-4">
+                                        <p>Cu marfa: {this.props.destinationPrice} RON/km</p>
+                                        <p>Fara marfa: {this.props.clientPrice} RON/km</p>
                                     </div>}
                             </div>
                         </div>

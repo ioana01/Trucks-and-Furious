@@ -6,7 +6,7 @@ export class TransportRequests {
         contact,
         departure,
         departureTime,
-        mass,
+        weight,
         maximumArrivalTime,
         maximumDepartureTime,
         merchType,
@@ -18,7 +18,7 @@ export class TransportRequests {
         this.contact = contact;
         this.departure = departure;
         this.departureTime = departureTime;
-        this.mass = mass;
+        this.weight = weight;
         this.maximumArrivalTime = maximumArrivalTime;
         this.maximumDepartureTime = maximumDepartureTime;
         this.merchType = merchType;

@@ -9,7 +9,7 @@ export class TransportOffers {
         destinationPrice,
         height,
         length,
-        mass,
+        weight,
         truckId,
         volume,
         width
@@ -23,7 +23,7 @@ export class TransportOffers {
         this.destinationPrice = destinationPrice;
         this.height = height;
         this.length = length;
-        this.mass = mass;
+        this.weight = weight;
         this.truckId = truckId;
         this.volume = volume;
         this.width = width;

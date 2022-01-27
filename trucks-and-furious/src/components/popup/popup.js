@@ -1,106 +1,109 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { auth, database } from "../../firebase";
 import './popup.css';
 
-class MyPopUp extends Component {
-    constructor(props) {
-        super(props);
+export default function MyPopUp(props){
 
-        this.state = {
-            requests: []
-        }
-    }
+    const [requests, setRequests] = useState([]);
+    const [trucks, setTrucks] = useState([]);
 
-    async componentDidMount() {
-        if(this.props.userType === 'expeditor') {
-            const requestsRefs = database.ref('transport_requests');
-            let requests = [];
-    
+    useEffect(() => {
+        let requests = [];
+        const requestsRefs = props.userType === 'expeditor' 
+            ? database.ref('transport_offers') : database.ref('transport_requests');
+        
+        const fetchRequests = async () => {
             await requestsRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                     const childId = childSnapshot.key;
     
-                    if(childData.contact.email === auth.currentUser.email) {
-                        requests.push({
-                            id: childId,
-                            data: childData
-                        })
+                    if(childData.contact.email === auth.currentUser.email && childData.status === 'available') {
+                        requests.push({ id: childId, data: childData });
                     }
                 });
-
-                this.setState({ requests: requests });
+                setRequests(requests);
             });
-        } else if(this.props.userType === 'transportator') {
-            const requestsRefs = database.ref('transport_offers');
-            let requests = [];
-    
-            await requestsRefs.on('value', snapshot => {
+        }
+
+        fetchRequests();
+    }, []);
+
+    useEffect(() => {
+        let trucks = [];
+        if (props.userType === "expeditor")
+            return;
+
+        const trucksRefs = database.ref('trucks');
+        const fetchTrucks = async () => {
+            await trucksRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                     const childId = childSnapshot.key;
-    
-                    if(childData.contact.email === auth.currentUser.email) {
-                        requests.push({
-                            id: childId,
-                            data: childData
-                        })
+                    
+                    childData.details = `${childData.type} - V:${childData.volume} - W:${childData.weight}`;
+
+                    if(childData.owner === auth.currentUser.email && childData.status === 'available') {
+                        trucks.push({ id: childId, data: childData });
                     }
                 });
-
-                this.setState({ requests: requests });
+                setTrucks(trucks);
             });
         }
+        fetchTrucks();
+    }, []);
+
+    const fetchTrucksDetails = (truckId) => {
+        const truck = trucks.find(truck => truck.id === truckId);
+        if (!truck) return `Nu exista date despre camionul ${truckId}`;
+
+        return `${truck.data.type} - V:${truck.data.volume} - W:${truck.data.weight}`;
     }
 
-    render() {
-        return (this.props.trigger) ? (
-            this.state.requests &&
-            <div className="popup-box">
-                <div className="box">
-                    <span className="close-icon" onClick={this.props.handleClose}> x </span>
+    return (props.trigger) ? (
+        requests &&
+        <div className="popup-box">
+            <div className="box">
+                <span className="close-icon" onClick={props.handleClose}> x </span>
+                <div>
                     <div>
-                        <div>
-                            <h4 className="popup-title">
-                                {this.props.userType === 'expeditor' ? 'Choose your request:' : 'Choose your truck'}
-                            </h4>
-                        </div>
-    
-                        <Card id='card-container-login'>
-                            <Card.Body>
-                                <Form>
-                                    {this.props.userType === 'expeditor' ? 
-                                    this.state.requests.map(request => {
-                                        return <>
-                                            <Link to={{pathname: `/contract/${this.props.requestId}/${request.id}`}}>
-                                                <Button className="w-100 auth-button option-btn" type="submit">
-                                                    {request.id}
-                                                </Button> 
-                                            </Link>
-                                            <br></br>
-                                        </>
-                                    }) :
-                                    this.state.requests.map(request => {
-                                        return <>
-                                            <Link to={{pathname: `/contract/${this.props.requestId}/${request.id}`}}>
-                                                <Button className="w-100 auth-button option-btn" type="submit">
-                                                    {/* TODO: change status for truck */}
-                                                    {request.data.truckId}
-                                                </Button> 
-                                            </Link>
-                                            <br></br>
-                                        </>
-                                    })}
-                                </Form>
-                            </Card.Body>
-                        </Card>
+                        <h4 className="popup-title">
+                            {props.userType === 'expeditor' ? 'Choose your request:' : 'Choose your truck'}
+                        </h4>
                     </div>
+
+                    <Card id='card-container-login'>
+                        <Card.Body>
+                            <Form>
+                                {props.userType === 'expeditor' ? 
+                                requests.map(request => {
+                                    return <>
+                                        <Link to={{pathname: `/contract/${props.requestId}/${request.id}`}}>
+                                            <Button className="w-100 auth-button option-btn" type="submit">
+                                                {request.id}
+                                            </Button> 
+                                        </Link>
+                                        <br></br>
+                                    </>
+                                }) :
+                                requests.map(request => {
+                                    return <>
+                                        <Link to={{pathname: `/contract/${props.requestId}/${request.id}`}}>
+                                            <Button className="w-100 auth-button option-btn" type="submit">
+                                                {/* TODO: change status for truck */}
+                                                { request.data.truckId }
+                                            </Button> 
+                                        </Link>
+                                        <br></br>
+                                    </>
+                                })}
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 </div>
             </div>
-        ): "";
-    }
+        </div>
+    ): "";
 }
-
-export default MyPopUp;

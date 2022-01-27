@@ -5,19 +5,23 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { defaultLocations } from "../../default_locations";
 import "./map.css";
 
-import { newTruckGraphic } from "./argcis-utils";
+import { newTruckGraphic, newGraphicLine } from "./argcis-utils";
 import { database } from "../../firebase";
+import { StarHalfTwoTone } from "@material-ui/icons";
 
 export default function ArgcisMap(props) {
 
     const [contractNonce, setContractNonce] = useState(`${props.match.params.contractNonce}`);
     const [contract, setContract] = useState(null);
+    const [startAnimation, setStartAnimation] = useState(false);
+    const [finishedAnimation, setFinishedAnimation] = useState(false);
 
     const [locationPoints, setLocationPoints] = useState({
         departure: {x: 0, y: 0, name: ''},
         destination: {x: 0, y: 0, name: ''},
-        clientPosition: {x: 0, y: 0, name: ''}
-    })
+        clientPosition: {x: 0, y: 0, name: ''},
+        truckPosition: {x: 0, y: 0, name: ''},
+    });
 
     const mapDiv = useRef(null);
     const trucksLayer = useRef(new GraphicsLayer());
@@ -89,9 +93,50 @@ export default function ArgcisMap(props) {
         setLocationPoints({
             departure: {x: defaultDeparture.x, y: defaultDeparture.y, name: defaultDeparture.name},
             destination: {x: defaultDestination.x, y: defaultDestination.y, name: defaultDestination.name},
-            clientPosition: {x: defaultClientPosition.x, y: defaultClientPosition.y, name: defaultClientPosition.name}
+            clientPosition: {x: defaultClientPosition.x, y: defaultClientPosition.y, name: defaultClientPosition.name},
+            truckPosition: {x: defaultDeparture.x, y: defaultDeparture.y, name: defaultDeparture.name},
         });
     }, [contract]);
+
+    const getClientGraphicPosition = () => {
+        return newTruckGraphic({
+            x: locationPoints.clientPosition.x, 
+            y: locationPoints.clientPosition.y}, "red", null, attributes);
+    }
+
+    const getDepartureGraphicPosition = () => {
+        return newTruckGraphic({
+            x: locationPoints.departure.x,
+            y: locationPoints.departure.y}, "blue", null, attributes);
+    }
+
+    const getDestinationGraphicPosition = () => {
+        return newTruckGraphic({
+            x: locationPoints.destination.x,
+            y: locationPoints.destination.y}, "yellow", null, attributes);
+    }
+
+    const getTruckGraphicPosition = () => {
+        return newTruckGraphic({
+            x: locationPoints.truckPosition.x,
+            y: locationPoints.truckPosition.y}, "orange", "10px", attributes);
+    }
+
+    const getDepartureClientLine = () => {
+        return newGraphicLine({
+            x: locationPoints.departure.x,
+            y: locationPoints.departure.y}, {
+            x: locationPoints.clientPosition.x,
+            y: locationPoints.clientPosition.y});
+    }
+
+    const getClientDestinationLine = () => {
+        return newGraphicLine({
+            x: locationPoints.clientPosition.x,
+            y: locationPoints.clientPosition.y}, {
+            x: locationPoints.destination.x,
+            y: locationPoints.destination.y});
+    }
 
     useEffect(() => {
 
@@ -99,14 +144,90 @@ export default function ArgcisMap(props) {
             || !locationPoints.departure.name 
             || !locationPoints.destination.name)
             return;
+        
+        const clientPoint = getClientGraphicPosition();
+        const departurePoint = getDepartureGraphicPosition();
+        const destinationPoint = getDestinationGraphicPosition();
+        const truckPoint = getTruckGraphicPosition();
+        
+        const departureClientLine = getDepartureClientLine();
+        const clientDestinationLine = getClientDestinationLine();
+
+        trucksLayer.current.removeAll();
+        trucksLayer.current.addMany([
+            clientPoint, 
+            departurePoint, 
+            destinationPoint, 
+            truckPoint,
+            departureClientLine,
+            clientDestinationLine]);
 
         console.log("Showing the following location maps: ");
         console.log(locationPoints);
+
+        setStartAnimation(true);
 
     }, [locationPoints])
 
     useEffect (() => {
 
+        if (finishedAnimation)
+            return;
+
+        let secondPhase = false;
+
+        let startX = locationPoints.departure.x;
+        let startY = locationPoints.departure.y;
+        let finishX = locationPoints.clientPosition.x;
+        let finishY = locationPoints.clientPosition.y;
+
+        let truckCurrentX = locationPoints.departure.x;
+        let truckCurrentY;
+
+        const timer = setInterval(() => {
+
+            truckCurrentY = startY + (finishY - startY) * ((truckCurrentX - startX) / (finishX - startX));
+            truckCurrentY = Math.round(truckCurrentY * 100) / 100;
+
+            const newTruckPoint = newTruckGraphic({
+                x: truckCurrentX,
+                y: truckCurrentY}, "orange", "10px", attributes);
+            
+            trucksLayer.current.removeAll();
+            trucksLayer.current.addMany([
+                getClientGraphicPosition(),
+                getDepartureGraphicPosition(),
+                getDestinationGraphicPosition(),
+                getDepartureClientLine(),
+                getClientDestinationLine(),
+                newTruckPoint,
+            ]);
+
+            console.log("Truck position: ", {x: truckCurrentX, y: truckCurrentY});
+
+            if (truckCurrentX === locationPoints.clientPosition.x 
+                && truckCurrentY === locationPoints.clientPosition.y) {
+                if (!secondPhase) {
+                    secondPhase = true;
+                    startX = locationPoints.clientPosition.x;
+                    startY = locationPoints.clientPosition.y;
+                    finishX = locationPoints.destination.x;
+                    finishY = locationPoints.destination.y;
+                }
+            }
+
+            if (truckCurrentX === locationPoints.destination.x
+                && truckCurrentY === locationPoints.destination.y) {
+                clearInterval(timer);
+                setFinishedAnimation(true);
+            }
+
+            truckCurrentX += 0.01 * (Math.sign(finishX - startX));
+            truckCurrentX = Math.round(truckCurrentX * 100) / 100;
+
+        }, 100);
+
+        return () => clearInterval(timer);
         // const timer = setInterval(() => {
         //     const trucks = [];
 
@@ -127,7 +248,7 @@ export default function ArgcisMap(props) {
 
         // trucksLayer.current.removeAll();
         // trucksLayer.current.addMany([truckOne, truckTwo]);
-    }, [])
+    }, [startAnimation, finishedAnimation])
 
     return (
         <div style={{ width: '100vw', height: '100vh' }} ref={mapDiv}></div>

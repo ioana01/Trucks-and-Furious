@@ -114,7 +114,7 @@ export default function Contract(props) {
             transportRequestId: transportRequestData.id,
             transportOfferId: transportOfferData.id,
             departure: transportOfferData.data.departure,
-            destination: transportOfferData.data.arrival,
+            destination: transportRequestData.data.arrival,
             clientPosition: transportRequestData.data.departure,
             totalPrice: getTotalPrice(),
             deadline: transportRequestData.data.maximumArrivalTime,
@@ -154,20 +154,24 @@ export default function Contract(props) {
     }
 
     const getTotalPrice = () => {
-        // const priceToClient = distance(
-        //     transportRequestData.data.clientPosition.latitude,
-        //     this.state.truckData.departure.latitude,
-        //     this.state.transportRequestData.clientPosition.longitude,
-        //     this.state.truckData.departure.longitude) * 
-        //     (this.state.transportOfferData.clientPrice + this.state.transportOfferData.destinationPrice);
+        const locations = defaultLocations();
+        const defaultClientPosition = locations.find(location => location.name === transportRequestData.data.arrival);
+        const defaultDeparture = locations.find(location => location.name === transportOfferData.data.departure);
+        const defaultDestination = locations.find(location => location.name === transportOfferData.data.arrival);
 
-        // const priceToDestination = distance(
-        //     this.state.truckData.departure.latitude,
-        //     this.state.truckData.destination.latitude,
-        //     this.state.truckData.departure.longitude,
-        //     this.state.truckData.destination.longitude) * this.state.transportOfferData.destinationPrice;
-        const priceToClient = 200;
-        const priceToDestination = 698;
+        const priceToClient = distance(
+            defaultDeparture.y,
+            defaultDeparture.x,
+            defaultClientPosition.y,
+            defaultClientPosition.x
+        );
+
+        const priceToDestination = distance(
+            defaultClientPosition.y,
+            defaultClientPosition.x,
+            defaultDestination.y,
+            defaultDestination.x
+        );
 
         const totalPrice = Math.round((priceToClient + priceToDestination) * 100) / 100;
 

@@ -1,101 +1,127 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
 import './contract.css';
 import { database, auth } from "../../firebase";
+import {defaultLocations} from "../../default_locations";
 
-class Contract extends Component {
-    constructor(props) {
-        super(props);
+export default function Contract(props) {
 
-        this.state = {
-            side1Id: `${this.props.match.params.clientRequest}`,
-            side2Id: `${this.props.match.params.myRequestId}`,
-            transportRequestData: {},
-            transportOfferData: {},
-            truckData: {},
-            offerId: ''
+    const [sideOneId, setSideOneId] = useState(`${props.match.params.clientRequest}`);
+    const [sideTwoId, setSideTwoId] = useState(`${props.match.params.myRequestId}`);
+    const [transportRequestData, setTransportRequestData] = useState({id: null, data: null});
+    const [transportOfferData, setTransportOfferData] = useState({id: null, data: null});
+    const [truck, setTruck] = useState();
+
+    useEffect(() => {
+        let transportRequestData;
+        let transportRequestId;
+        const transportRequestsRefs = database.ref('transport_requests');
+
+        const fetchTransportRequestData = async () => {
+            await transportRequestsRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    const childId = childSnapshot.key;
+    
+                    if(childId === sideOneId || childId === sideTwoId) {
+                        transportRequestData = childData;
+                        transportRequestId = childId;
+                    }
+                });
+                
+                //database.ref('/transport_requests').child(transportRequestId).update({'status': 'unavailable'});
+                setTransportRequestData({id: transportRequestId, data: transportRequestData});
+            });
         }
-    }
 
-    async componentDidMount() {
-        const requestsRefs = database.ref('transport_requests');
-        let requestData;
+        fetchTransportRequestData();
+    }, []);
 
-        await requestsRefs.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const childData = childSnapshot.val();
-                const childId = childSnapshot.key;
+    useEffect(() => {
+        let transportOfferData;
+        let transportOfferId;
+        const transportOfferRefs = database.ref('transport_offers');
 
-                if(childId === this.state.side1Id || childId === this.state.side2Id) {
-                    requestData = childData;
-                }
+        const fetchTransportOffersData = async () => {
+            await transportOfferRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    const childId = childSnapshot.key;
+    
+                    if(childId === sideOneId || childId === sideTwoId) {
+                        transportOfferData = childData;
+                        transportOfferId = childId;
+                    }
+                });
+                
+                //database.ref('/trucks').child(transportOfferData.truckId).update({'status': 'unavailable'});
+                //database.ref('/transport_offers').child(transportOfferId).update({'status': 'unavailable'});
+                setTransportOfferData({id: transportOfferId, data: transportOfferData});
             });
+        }
 
-            this.setState({ transportRequestData: requestData });
-        });
+        fetchTransportOffersData();
+    }, []);
 
-        const offersRefs = database.ref('transport_offers');
-        let offersData;
-        let offerId;
+    useEffect(() => {
+        if (!transportOfferData.data) 
+            return;
 
-        await offersRefs.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const childData = childSnapshot.val();
-                const childId = childSnapshot.key;
-
-                if(childId === this.state.side1Id || childId === this.state.side2Id) {
-                    offersData = childData;
-                    offerId = childId;
-                }
-            });
-
-            this.setState({ transportOfferData: offersData });
-            this.setState({ offerId: offerId });
-        });
-
-        const trucksRefs = database.ref('trucks');
         let truckData;
+        const truckRefs = database.ref('trucks');
 
-        await trucksRefs.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const childData = childSnapshot.val();
-                const childId = childSnapshot.key;
-
-                if(childId === this.state.transportOfferData.truckId) {
-                    truckData = childData;
-                }
+        const fetchTruckData = async () => {
+            await truckRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    const childId = childSnapshot.key;
+    
+                    if(childId === transportOfferData.data.truckId) {
+                        truckData = childData;
+                    }
+                });
+                
+                setTruck(truckData);
             });
+        }
 
-            this.setState({ truckData: truckData });
-        });
+        fetchTruckData();
+    }, [transportOfferData]);
 
-        database.ref('/trucks').child(this.state.transportOfferData.truckId).update({'status': 'unavailable'});
+    useEffect(() => {
 
-        this.createContract();
-    }
+        if (!transportOfferData.data || !transportRequestData.data)
+            return;
 
-    createContract() {
+        createContract();
+    }, [transportOfferData, transportRequestData])
+
+
+    const createContract = () => {
         const contract = {
             carry: {
-                email: this.state.transportOfferData.contact.email,
-                phone: this.state.transportOfferData.contact.phone
+                email: transportOfferData.data.contact.email,
+                phone: transportOfferData.data.contact.phone
             },
             sender: {
-                email: this.state.transportRequestData.contact.email,
-                phone: this.state.transportRequestData.contact.phone
+                email: transportRequestData.data.contact.email,
+                phone: transportRequestData.data.contact.phone
             },
-            departure: this.state.transportOfferData.departure,
-            destination: this.state.transportOfferData.arrival,
-            price: this.getTotalPrice(),
-            deadline: this.state.transportOfferData.deadline,
-            merch: this.state.transportRequestData.merchType,
-            truck: this.state.transportOfferData.truckId,
+            transportRequestId: transportRequestData.id,
+            transportOfferId: transportOfferData.id,
+            departure: transportOfferData.data.departure,
+            destination: transportOfferData.data.arrival,
+            clientPosition: transportRequestData.data.departure,
+            totalPrice: getTotalPrice(),
+            deadline: transportOfferData.data.deadline,
+            merch: transportRequestData.data.merchType,
+            truck: transportOfferData.data.truckId,
         }
 
         database.ref('contracts').push(contract);
     }
 
-    distance(lat1, lat2, lon1, lon2) {
+    const distance = (lat1, lat2, lon1, lon2) => {
         // The math module contains a function
         // named toRadians which converts from
         // degrees to radians.
@@ -121,81 +147,78 @@ class Contract extends Component {
         return(c * r);
     }
 
-    getTotalPrice() {
-        const priceToClient = this.distance(
-            this.state.transportRequestData.clientPosition.latitude,
-            this.state.truckData.departure.latitude,
-            this.state.transportRequestData.clientPosition.longitude,
-            this.state.truckData.departure.longitude) * 
-            (this.state.transportOfferData.clientPrice + this.state.transportOfferData.destinationPrice);
+    const getTotalPrice = () => {
+        // const priceToClient = distance(
+        //     transportRequestData.data.clientPosition.latitude,
+        //     this.state.truckData.departure.latitude,
+        //     this.state.transportRequestData.clientPosition.longitude,
+        //     this.state.truckData.departure.longitude) * 
+        //     (this.state.transportOfferData.clientPrice + this.state.transportOfferData.destinationPrice);
 
-        const priceToDestination = this.distance(
-            this.state.truckData.departure.latitude,
-            this.state.truckData.destination.latitude,
-            this.state.truckData.departure.longitude,
-            this.state.truckData.destination.longitude) * this.state.transportOfferData.destinationPrice;
+        // const priceToDestination = distance(
+        //     this.state.truckData.departure.latitude,
+        //     this.state.truckData.destination.latitude,
+        //     this.state.truckData.departure.longitude,
+        //     this.state.truckData.destination.longitude) * this.state.transportOfferData.destinationPrice;
+        const priceToClient = 200;
+        const priceToDestination = 698;
 
         const totalPrice = Math.round((priceToClient + priceToDestination) * 100) / 100;
 
-        database.ref('/transport_offers').child(this.state.offerId).update({'totalPrice': totalPrice});
+        database.ref('/transport_offers').child(transportOfferData.id).update({'totalPrice': totalPrice});
 
         return totalPrice;
     }
 
-    render() {
-        return(
-            <>
-                {this.state.transportOfferData && this.state.transportRequestData &&
+    return(
+        <>
+            { transportOfferData.data && transportRequestData.data &&
                 <div className='item-info'>
                     <h2>Contract</h2>
 
                     <div className='info-section'>
                         <p>Transportator:</p>
-                        {this.state.transportOfferData.contact &&
+                        {transportOfferData.data.contact &&
                         <ul>
-                            <li>email: {this.state.transportOfferData.contact.email}</li>
-                            <li>phone: {this.state.transportOfferData.contact.phone}</li>
+                            <li>email: {transportOfferData.data.contact.email}</li>
+                            <li>phone: {transportOfferData.data.contact.phone}</li>
                         </ul>}
                     </div>
 
                     <div className='info-section'>
                         <p>Expeditor:</p>
-                        {this.state.transportRequestData.contact &&
+                        {transportRequestData.data.contact &&
                         <ul>
-                            <li>email: {this.state.transportRequestData.contact.email}</li>
-                            <li>phone: {this.state.transportRequestData.contact.phone}</li>
+                            <li>email: {transportRequestData.data.contact.email}</li>
+                            <li>phone: {transportRequestData.data.contact.phone}</li>
                         </ul>}
                     </div>
 
                     <div className='info-section'>
-                        <p>Plecare: {this.state.transportOfferData.departure}</p>
-                        <p>Destinatie: {this.state.transportOfferData.arrival}</p>
+                        <p>Plecare: {transportOfferData.data.departure}</p>
+                        <p>Destinatie: {transportOfferData.data.arrival}</p>
 
-                        {this.state.transportRequestData && this.state.truckData &&
-                        this.state.transportRequestData.clientPosition && this.state.truckData.departure &&
-                        <p>Tarif: {this.getTotalPrice()} RON</p>}
+                        {transportRequestData.data && transportOfferData.data &&
+                        <p>Tarif: {getTotalPrice()} RON</p>}
 
-                        <p>Termen de plata: {this.state.transportOfferData.deadline}</p>
+                        <p>Termen de plata: {transportOfferData.data.deadline}</p>
                     </div>
 
                     <div className='info-section'>
-                        <p>Marfa: {this.state.transportRequestData.merchType}</p>
+                        <p>Marfa: {transportRequestData.data.merchType}</p>
                         <p>Camion: </p>
                         <ul>
-                            <li>type: {this.state.truckData.type}</li>
-                            <li>height: {this.state.truckData.height} m</li>
-                            <li>length: {this.state.truckData.length} m</li>
-                            <li>width: {this.state.truckData.width} m</li>
-                            <li>weight: {this.state.truckData.weight} kg</li>
-                            <li>volume: {this.state.truckData.volume} m<sup>3</sup></li>
+                            <li>type: {truck?.type}</li>
+                            <li>height: {truck?.height} m</li>
+                            <li>length: {truck?.length} m</li>
+                            <li>width: {truck?.width} m</li>
+                            <li>weight: {truck?.weight} kg</li>
+                            <li>volume: {truck?.volume} m<sup>3</sup></li>
                         </ul>
                     </div>
 
                     <p>Obs: Acest contract reprezintă angajamentul ferm între cele doua parti</p>
                 </div>}
-            </>
-        );
-    }
+        </>
+    );
 }
-
-export default Contract;
